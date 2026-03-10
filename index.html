@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SCEM School Announcement Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #5b21b6;
+  --primary-dark: #4c1d95;
+  --primary-light: #7c3aed;
+  --accent: #f59e0b;
+  --academic: #2563eb;
+  --event: #7c3aed;
+  --outside-campus: #059669;
+  --general: #6b7280;
+  --bg-light: #faf5ff;
+  --text-dark: #1f2937;
+  --text-light: #6b7280;
+  --white: #ffffff;
+  --sidebar-w: 220px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Outfit', sans-serif; background: var(--bg-light); color: var(--text-dark); line-height: 1.6; }
+
+/* ===== AUTH PAGE ===== */
+#authPage {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative; overflow: hidden;
+}
+#authPage::before {
+  content: ''; position: absolute; width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  top: -200px; right: -200px; border-radius: 50%; animation: float 20s ease-in-out infinite;
+}
+#authPage::after {
+  content: ''; position: absolute; width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+  bottom: -100px; left: -100px; border-radius: 50%; animation: float 15s ease-in-out infinite reverse;
+}
+@keyframes float {
+  0%, 100% { transform: translate(0,0) rotate(0deg); }
+  33% { transform: translate(30px,-30px) rotate(5deg); }
+  66% { transform: translate(-20px,20px) rotate(-5deg); }
+}
+.auth-container {
+  display: grid; grid-template-columns: 1fr 1fr; max-width: 1100px; width: 100%;
+  background: var(--white); border-radius: 24px; overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.3); position: relative; z-index: 1;
+  animation: slideUp 0.6s ease-out;
+}
+@keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+.auth-brand {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: var(--white); padding: 60px 40px; position: relative; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.brand-content { position: relative; z-index: 2; }
+.school-logo { margin-bottom: 30px; animation: fadeInDown 0.8s ease-out 0.2s both; }
+.logo-circle {
+  width: 80px; height: 80px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+.logo-circle i { font-size: 36px; color: var(--white); }
+.auth-brand h1 { font-size: 48px; font-weight: 700; margin-bottom: 10px; letter-spacing: -1px; animation: fadeInDown 0.8s ease-out 0.3s both; }
+.tagline { font-size: 16px; opacity: 0.9; margin-bottom: 50px; font-weight: 300; animation: fadeInDown 0.8s ease-out 0.4s both; }
+.brand-features { display: flex; flex-direction: column; gap: 20px; }
+.brand-feature-item {
+  display: flex; align-items: center; gap: 15px; padding: 15px 20px;
+  background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.2); animation: fadeInLeft 0.8s ease-out both;
+}
+.brand-feature-item:nth-child(1) { animation-delay: 0.5s; }
+.brand-feature-item:nth-child(2) { animation-delay: 0.6s; }
+.brand-feature-item:nth-child(3) { animation-delay: 0.7s; }
+.brand-feature-item i { font-size: 22px; opacity: 0.9; }
+.brand-feature-item span { font-weight: 500; font-size: 15px; }
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInLeft { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+.decorative-shapes { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; opacity: 0.4; }
+.shape { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); }
+.shape-1 { width: 300px; height: 300px; top: -100px; right: -100px; animation: rotate 30s linear infinite; }
+.shape-2 { width: 150px; height: 150px; bottom: 50px; left: -50px; animation: rotate 20s linear infinite reverse; }
+.shape-3 { width: 200px; height: 200px; top: 50%; right: -80px; animation: rotate 25s linear infinite; }
+@keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.auth-form-section { padding: 50px; display: flex; align-items: center; justify-content: center; background: var(--white); overflow-y: auto; max-height: 100vh; }
+.auth-box { width: 100%; max-width: 420px; animation: fadeIn 0.8s ease-out 0.4s both; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.auth-tabs { display: flex; background: #f3f4f6; border-radius: 12px; padding: 4px; margin-bottom: 28px; }
+.auth-tab {
+  flex: 1; padding: 10px; border: none; border-radius: 9px; background: none;
+  font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer;
+  color: var(--text-light); transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 7px;
+}
+.auth-tab.active { background: white; color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.auth-tab i { font-size: 13px; }
+.auth-panel { display: none; }
+.auth-panel.active { display: block; }
+.auth-panel-title { font-size: 26px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px; }
+.auth-panel-sub { color: var(--text-light); font-size: 14px; margin-bottom: 28px; }
+.input-group { margin-bottom: 16px; }
+.input-group label { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 7px; }
+.input-group label i { color: var(--primary); font-size: 13px; }
+.input-group input, .input-group select {
+  width: 100%; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 11px;
+  font-size: 14px; font-family: 'Outfit', sans-serif; color: var(--text-dark);
+  background: #fafafa; transition: all 0.3s ease; outline: none;
+}
+.input-group input:focus, .input-group select:focus { border-color: var(--primary-light); background: var(--white); box-shadow: 0 0 0 4px rgba(124,58,237,0.1); }
+.input-group select { appearance: none; cursor: pointer; }
+.password-wrapper { position: relative; }
+.toggle-password { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-light); padding: 4px; transition: color 0.2s; }
+.toggle-password:hover { color: var(--primary); }
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.domain-hint { font-size: 12px; color: var(--text-light); margin-top: 5px; display: flex; align-items: center; gap: 4px; }
+.domain-hint i { color: var(--accent); font-size: 11px; }
+.error-msg { color: #ef4444; font-size: 13px; background: #fee2e2; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; display: none; align-items: center; gap: 8px; }
+.error-msg.show { display: flex; }
+.error-msg i { flex-shrink: 0; }
+.success-msg { color: #059669; font-size: 13px; background: #d1fae5; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; display: none; align-items: center; gap: 8px; }
+.success-msg.show { display: flex; }
+.auth-btn {
+  width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: var(--white); border: none; border-radius: 11px; font-size: 15px; font-weight: 600;
+  font-family: 'Outfit', sans-serif; cursor: pointer; display: flex; align-items: center;
+  justify-content: center; gap: 10px; transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(91,33,182,0.3); margin-top: 4px;
+}
+.auth-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(91,33,182,0.4); }
+.auth-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.auth-switch { text-align: center; margin-top: 20px; font-size: 14px; color: var(--text-light); }
+.auth-switch a { color: var(--primary); font-weight: 600; cursor: pointer; text-decoration: none; }
+.auth-switch a:hover { text-decoration: underline; }
+
+/* ===== LOADING SCREEN ===== */
+#loadingScreen {
+  position: fixed; inset: 0; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  z-index: 9998; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+}
+.loading-logo { width: 64px; height: 64px; background: rgba(255,255,255,0.2); border-radius: 18px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; }
+.loading-logo i { font-size: 30px; color: white; }
+#loadingScreen h2 { color: white; font-size: 22px; font-weight: 700; letter-spacing: 1px; }
+.loading-spinner { width: 36px; height: 36px; border: 3px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
+#loadingScreen p { color: rgba(255,255,255,0.7); font-size: 14px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== DASHBOARD ===== */
+#dashboard { display: none; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.app-wrapper { display: flex; min-height: 100vh; }
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: var(--sidebar-w); background: linear-gradient(180deg, #3b0e8c 0%, #5b21b6 50%, #7c3aed 100%);
+  display: flex; flex-direction: column; position: fixed; top: 0; left: 0;
+  height: 100vh; z-index: 100; box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sidebar-logo { display: flex; align-items: center; gap: 12px; padding: 28px 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.sidebar-logo .logo-icon { width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+.sidebar-logo .logo-icon i { color: white; font-size: 18px; }
+.sidebar-logo .logo-text { font-size: 22px; font-weight: 700; color: white; letter-spacing: 1px; }
+.sidebar-nav { flex: 1; padding: 20px 12px; display: flex; flex-direction: column; gap: 4px; }
+.nav-item {
+  display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px;
+  color: rgba(255,255,255,0.7); cursor: pointer; transition: all 0.2s ease; font-size: 14px;
+  font-weight: 500; border: none; background: none; width: 100%; text-align: left; font-family: 'Outfit', sans-serif;
+}
+.nav-item:hover { background: rgba(255,255,255,0.1); color: white; }
+.nav-item.active { background: rgba(255,255,255,0.2); color: white; border-left: 3px solid white; padding-left: 13px; }
+.nav-item i { width: 18px; font-size: 15px; }
+.sidebar-user { padding: 20px 16px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 10px; }
+.user-avatar { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.4); flex-shrink: 0; font-size: 17px; font-weight: 700; color: white; }
+.user-info { flex: 1; min-width: 0; }
+.user-name { font-size: 13px; font-weight: 600; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.user-email { font-size: 11px; color: rgba(255,255,255,0.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ===== MAIN ===== */
+.main-content { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; background: #f3f0fb; border-radius: 20px 0 0 20px; }
+.topbar { display: flex; align-items: center; padding: 16px 28px; background: white; border-radius: 20px 0 0 0; box-shadow: 0 2px 8px rgba(0,0,0,0.06); gap: 16px; position: sticky; top: 0; z-index: 50; }
+.search-bar { display: flex; align-items: center; gap: 10px; background: #f3f4f6; border-radius: 10px; padding: 10px 16px; flex: 1; max-width: 360px; border: 1.5px solid transparent; transition: all 0.2s; }
+.search-bar:focus-within { border-color: var(--primary-light); background: white; }
+.search-bar i { color: var(--text-light); font-size: 14px; }
+.search-bar input { border: none; background: none; outline: none; font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--text-dark); width: 100%; }
+.help-btn { margin-left: auto; width: 38px; height: 38px; border-radius: 10px; background: #ede9fe; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 16px; transition: all 0.2s; flex-shrink: 0; }
+.help-btn:hover { background: var(--primary); color: white; transform: scale(1.05); }
+
+/* ===== PAGE ===== */
+.page-content { padding: 28px; flex: 1; }
+.page { display: none; }
+.page.active { display: block; }
+.page-header { margin-bottom: 24px; }
+.page-title-row { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+.page-icon { width: 44px; height: 44px; background: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+.page-icon i { color: white; font-size: 20px; }
+.page-header h2 { font-size: 26px; font-weight: 700; color: var(--text-dark); }
+.page-header p { color: var(--text-light); font-size: 14px; padding-left: 58px; margin-top: -2px; }
+
+/* ===== STATS ===== */
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.stat-card { background: white; border-radius: 16px; padding: 20px; display: flex; align-items: center; gap: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: all 0.2s; }
+.stat-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(91,33,182,0.12); }
+.stat-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.stat-icon.purple { background: #ede9fe; color: var(--primary); }
+.stat-icon.blue { background: #dbeafe; color: var(--academic); }
+.stat-icon.red { background: #fee2e2; color: #ef4444; }
+.stat-icon.amber { background: #fef3c7; color: var(--accent); }
+.stat-info { flex: 1; }
+.stat-label { font-size: 12px; color: var(--text-light); font-weight: 500; }
+.stat-sublabel { font-size: 11px; color: var(--text-light); margin-bottom: 4px; }
+.stat-value { font-size: 28px; font-weight: 700; color: var(--text-dark); line-height: 1.2; }
+
+/* ===== DASHBOARD GRID ===== */
+.dashboard-grid { display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
+.panel { background: white; border-radius: 16px; padding: 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.panel-title { font-size: 17px; font-weight: 700; color: var(--text-dark); }
+.sort-btn { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border: 1.5px solid #e5e7eb; border-radius: 8px; background: white; font-size: 13px; color: var(--text-dark); cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 500; transition: all 0.2s; outline: none; }
+.sort-btn:hover { border-color: var(--primary-light); color: var(--primary); }
+.panel-search { display: flex; align-items: center; gap: 10px; background: #f9fafb; border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; }
+.panel-search i { color: var(--text-light); font-size: 13px; }
+.panel-search input { border: none; background: none; outline: none; font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--text-dark); width: 100%; }
+.filter-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.filter-tab { padding: 7px 16px; border-radius: 20px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1.5px solid #e5e7eb; background: white; color: var(--text-light); font-family: 'Outfit', sans-serif; transition: all 0.2s; }
+.filter-tab:hover { border-color: var(--primary-light); color: var(--primary); }
+.filter-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+/* ===== ANN LIST ===== */
+.ann-list { display: flex; flex-direction: column; gap: 10px; }
+
+/* ===== PINNED SECTION ===== */
+.pinned-section { margin-bottom: 20px; }
+.pinned-section-header {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+  padding: 8px 14px; background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-radius: 10px; border: 1.5px solid #f59e0b;
+}
+.pinned-section-header i { color: #d97706; font-size: 14px; }
+.pinned-section-header span { font-size: 13px; font-weight: 700; color: #92400e; letter-spacing: 0.3px; }
+
+.ann-item { display: flex; align-items: flex-start; gap: 14px; padding: 16px; border-radius: 12px; background: #fafafa; border: 1.5px solid #f0f0f0; transition: all 0.2s; position: relative; }
+.ann-item:hover { border-color: var(--primary-light); background: white; box-shadow: 0 2px 12px rgba(91,33,182,0.08); }
+.ann-item.pinned-item { background: #fffbeb; border-color: #fde68a; border-left: 3px solid #f59e0b; }
+.ann-item.pinned-item:hover { border-color: #f59e0b; box-shadow: 0 2px 12px rgba(245,158,11,0.15); }
+
+.pin-badge {
+  position: absolute; top: -1px; right: 14px;
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  color: white; font-size: 10px; font-weight: 700; padding: 3px 8px;
+  border-radius: 0 0 8px 8px; display: flex; align-items: center; gap: 4px;
+  box-shadow: 0 2px 6px rgba(245,158,11,0.3);
+}
+.pin-badge i { font-size: 9px; }
+
+.ann-cat-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+.ann-cat-icon.Academic { background: #dbeafe; color: var(--academic); }
+.ann-cat-icon.Event { background: #ede9fe; color: var(--event); }
+.ann-cat-icon.OutsideCampus { background: #d1fae5; color: var(--outside-campus); }
+.ann-cat-icon.General { background: #f3f4f6; color: var(--general); }
+.ann-body { flex: 1; min-width: 0; }
+.ann-title { font-size: 15px; font-weight: 600; color: var(--text-dark); margin-bottom: 3px; }
+.ann-desc { font-size: 13px; color: var(--text-light); margin-bottom: 6px; }
+.ann-extra { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.ann-extra-chip { display: inline-flex; align-items: center; gap: 5px; background: #f3f0fb; border: 1px solid #e5e7eb; border-radius: 20px; padding: 3px 10px; font-size: 12px; color: var(--text-dark); font-weight: 500; }
+.ann-extra-chip i { color: var(--primary); font-size: 11px; }
+.ann-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ann-date { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-light); }
+.ann-date i { font-size: 11px; }
+.ann-cat-badge { font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 20px; }
+.ann-cat-badge.Academic { background: #dbeafe; color: var(--academic); }
+.ann-cat-badge.Event { background: #ede9fe; color: var(--event); }
+.ann-cat-badge.OutsideCampus { background: #d1fae5; color: var(--outside-campus); }
+.ann-cat-badge.General { background: #f3f4f6; color: var(--general); }
+.ann-posted { font-size: 12px; color: var(--text-light); white-space: nowrap; flex-shrink: 0; }
+.ann-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; margin-top: 2px; flex-wrap: wrap; justify-content: flex-end; }
+.btn-edit { padding: 6px 14px; border-radius: 8px; border: 1.5px solid #e5e7eb; background: white; color: var(--text-dark); font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.2s; }
+.btn-edit:hover { border-color: var(--primary-light); color: var(--primary); }
+.btn-delete { padding: 6px 14px; border-radius: 8px; border: none; background: var(--primary); color: white; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.2s; }
+.btn-delete:hover { background: var(--primary-dark); }
+.btn-pin {
+  padding: 6px 12px; border-radius: 8px; border: 1.5px solid #e5e7eb;
+  background: white; color: var(--text-light); font-size: 13px; font-weight: 500;
+  cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.2s;
+  display: flex; align-items: center; gap: 5px;
+}
+.btn-pin:hover { border-color: #f59e0b; color: #d97706; background: #fffbeb; }
+.btn-pin.pinned { border-color: #f59e0b; background: linear-gradient(135deg, #fef3c7, #fde68a); color: #92400e; }
+.btn-pin.pinned:hover { background: #fee2e2; border-color: #ef4444; color: #ef4444; }
+
+/* ===== IMAGES ===== */
+.ann-img-wrap { position: relative; width: 100%; margin-bottom: 8px; border-radius: 8px; overflow: hidden; cursor: zoom-in; }
+.ann-img-wrap img { width: 100%; max-height: 120px; object-fit: cover; display: block; border-radius: 8px; transition: transform 0.3s ease, filter 0.3s ease; }
+.ann-img-wrap:hover img { transform: scale(1.04); filter: brightness(0.92); }
+.ann-img-zoom-hint { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.55); color: #fff; font-size: 11px; padding: 3px 8px; border-radius: 20px; display: flex; align-items: center; gap: 4px; opacity: 0; transition: opacity 0.25s; pointer-events: none; }
+.ann-img-wrap:hover .ann-img-zoom-hint { opacity: 1; }
+.manage-thumb-wrap { position: relative; width: 100%; height: 60px; margin-bottom: 6px; border-radius: 6px; overflow: hidden; cursor: zoom-in; }
+.manage-thumb-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease, filter 0.3s ease; }
+.manage-thumb-wrap:hover img { transform: scale(1.06); filter: brightness(0.9); }
+.manage-thumb-wrap .ann-img-zoom-hint { opacity: 0; }
+.manage-thumb-wrap:hover .ann-img-zoom-hint { opacity: 1; }
+
+/* ===== LIGHTBOX ===== */
+#lightboxOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; cursor: zoom-out; transition: background 0.3s ease; pointer-events: none; visibility: hidden; }
+#lightboxOverlay.open { background: rgba(0,0,0,0.85); pointer-events: all; visibility: visible; }
+.lightbox-inner { position: relative; max-width: 90vw; max-height: 88vh; transform: scale(0.7) translateY(30px); opacity: 0; transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease; cursor: default; }
+#lightboxOverlay.open .lightbox-inner { transform: scale(1) translateY(0); opacity: 1; }
+.lightbox-inner img { max-width: 90vw; max-height: 82vh; border-radius: 14px; box-shadow: 0 30px 80px rgba(0,0,0,0.6); display: block; object-fit: contain; user-select: none; }
+.lightbox-close { position: absolute; top: -14px; right: -14px; width: 36px; height: 36px; background: white; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--text-dark); box-shadow: 0 4px 14px rgba(0,0,0,0.3); transition: transform 0.2s ease, background 0.2s; z-index: 2; }
+.lightbox-close:hover { background: #ef4444; color: white; transform: scale(1.1) rotate(90deg); }
+.lightbox-caption { margin-top: 12px; text-align: center; color: rgba(255,255,255,0.75); font-size: 13px; }
+
+/* ===== CALENDAR SIDEBAR ===== */
+.calendar-panel { display: flex; flex-direction: column; gap: 16px; }
+.mini-calendar { background: var(--primary); border-radius: 16px; padding: 20px; color: white; }
+.cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.cal-month { font-size: 16px; font-weight: 700; }
+.cal-nav { background: none; border: none; color: white; cursor: pointer; width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+.cal-nav:hover { background: rgba(255,255,255,0.2); }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.cal-day-label { text-align: center; font-size: 11px; font-weight: 600; opacity: 0.7; padding: 4px 0; }
+.cal-day { text-align: center; font-size: 13px; padding: 6px 0; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-weight: 500; }
+.cal-day:hover { background: rgba(255,255,255,0.2); }
+.cal-day.today { background: white; color: var(--primary); font-weight: 700; }
+.cal-day.has-event { background: rgba(255,255,255,0.15); }
+.cal-day.other-month { opacity: 0.3; }
+.cal-day.selected { background: rgba(255,255,255,0.35); font-weight: 700; }
+.upcoming-panel { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.upcoming-title { font-size: 15px; font-weight: 700; margin-bottom: 14px; color: var(--text-dark); }
+.upcoming-list { display: flex; flex-direction: column; gap: 12px; }
+.upcoming-item { display: flex; align-items: flex-start; gap: 10px; }
+.upcoming-num { width: 28px; height: 28px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.upcoming-icon { width: 28px; height: 28px; background: #ede9fe; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 13px; flex-shrink: 0; }
+.upcoming-info { flex: 1; }
+.upcoming-name { font-size: 13px; font-weight: 600; color: var(--text-dark); }
+.upcoming-sub { font-size: 12px; color: var(--text-light); }
+
+/* ===== CREATE PAGE ===== */
+.create-grid { display: grid; grid-template-columns: 1fr 300px; gap: 20px; align-items: start; }
+.create-form-panel { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.form-section-label { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; display: flex; align-items: center; gap: 7px; }
+.form-section-label i { color: var(--primary); font-size: 13px; }
+.form-section-label .posted-hint { font-size: 12px; font-weight: 400; color: var(--text-light); margin-left: auto; }
+.form-input { width: 100%; padding: 12px 16px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 14px; font-family: 'Outfit', sans-serif; color: var(--text-dark); background: #fafafa; outline: none; transition: all 0.2s; margin-bottom: 16px; }
+.form-input:focus { border-color: var(--primary-light); background: white; box-shadow: 0 0 0 4px rgba(124,58,237,0.08); }
+textarea.form-input { resize: vertical; min-height: 90px; }
+.form-input-icon-wrap { position: relative; margin-bottom: 16px; }
+.form-input-icon-wrap .fii { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--primary-light); font-size: 13px; pointer-events: none; }
+.form-input-icon-wrap .form-input { padding-left: 38px; margin-bottom: 0; }
+.form-row-2c { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.form-row-2c .form-input-icon-wrap { margin-bottom: 0; }
+.category-select-wrapper { position: relative; margin-bottom: 16px; }
+.category-select-wrapper .cat-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--primary); font-size: 15px; pointer-events: none; }
+.form-select { width: 100%; padding: 12px 16px 12px 40px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 14px; font-family: 'Outfit', sans-serif; color: var(--text-dark); background: #fafafa; outline: none; appearance: none; cursor: pointer; transition: all 0.2s; }
+.form-select:focus { border-color: var(--primary-light); background: white; }
+.select-arrow { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--text-light); pointer-events: none; }
+.post-btn { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; font-family: 'Outfit', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(91,33,182,0.25); margin-top: 4px; }
+.post-btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
+.post-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.pin-toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; background: #f9fafb; border: 1.5px solid #e5e7eb;
+  border-radius: 10px; margin-bottom: 16px; cursor: pointer; transition: all 0.2s;
+}
+.pin-toggle-row:hover { border-color: #f59e0b; background: #fffbeb; }
+.pin-toggle-row.active { border-color: #f59e0b; background: linear-gradient(135deg, #fffbeb, #fef3c7); }
+.pin-toggle-left { display: flex; align-items: center; gap: 10px; }
+.pin-toggle-left i { color: #d97706; font-size: 16px; }
+.pin-toggle-label { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+.pin-toggle-sub { font-size: 12px; color: var(--text-light); }
+.toggle-switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-slider { position: absolute; inset: 0; background: #d1d5db; border-radius: 24px; cursor: pointer; transition: background 0.2s; }
+.toggle-slider:before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background: white; border-radius: 50%; transition: transform 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+.toggle-switch input:checked + .toggle-slider { background: #f59e0b; }
+.toggle-switch input:checked + .toggle-slider:before { transform: translateX(20px); }
+
+/* ===== MANAGE PANEL ===== */
+.manage-panel { background: white; border-radius: 16px; padding: 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.manage-title { font-size: 16px; font-weight: 700; color: var(--text-dark); margin-bottom: 16px; }
+.manage-search { display: flex; align-items: center; gap: 8px; background: #f9fafb; border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; }
+.manage-search i { color: var(--text-light); font-size: 13px; }
+.manage-search input { border: none; background: none; outline: none; font-family: 'Outfit', sans-serif; font-size: 13px; color: var(--text-dark); width: 100%; }
+.manage-filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.manage-filter { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1.5px solid #e5e7eb; background: white; color: var(--text-light); font-family: 'Outfit', sans-serif; transition: all 0.2s; }
+.manage-filter:hover { border-color: var(--primary-light); color: var(--primary); }
+.manage-filter.active { background: var(--primary); color: white; border-color: var(--primary); }
+.date-filter-input { display: flex; align-items: center; gap: 8px; background: #f9fafb; border: 1.5px solid #e5e7eb; border-radius: 8px; padding: 8px 12px; margin-bottom: 14px; }
+.date-filter-input i { color: var(--text-light); font-size: 13px; }
+.date-filter-input input { border: none; background: none; outline: none; font-family: 'Outfit', sans-serif; font-size: 12px; color: var(--text-dark); width: 100%; }
+.upload-img-btn { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1.5px dashed #d1d5db; border-radius: 8px; background: white; color: var(--text-light); font-size: 13px; font-family: 'Outfit', sans-serif; cursor: pointer; margin-bottom: 14px; transition: all 0.2s; width: 100%; justify-content: center; }
+.upload-img-btn:hover { border-color: var(--primary-light); color: var(--primary); background: #faf5ff; }
+.manage-actions { display: flex; gap: 8px; }
+.manage-ann-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+.manage-ann-card { background: white; border-radius: 12px; padding: 14px; border: 1.5px solid #f0f0f0; transition: all 0.2s; cursor: pointer; position: relative; }
+.manage-ann-card:hover { border-color: var(--primary-light); box-shadow: 0 2px 12px rgba(91,33,182,0.08); }
+.manage-ann-card.selected { border-color: var(--primary); background: #faf5ff; }
+.manage-ann-card.is-pinned { border-left: 3px solid #f59e0b; background: #fffbeb; }
+.manage-ann-card.is-pinned.selected { background: #fff8e1; }
+.manage-pin-indicator { position: absolute; top: 10px; right: 10px; background: linear-gradient(135deg, #f59e0b, #fbbf24); color: white; width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; }
+.manage-card-top { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
+.manage-card-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+.manage-card-icon.Academic { background: #dbeafe; color: var(--academic); }
+.manage-card-icon.Event { background: #ede9fe; color: var(--event); }
+.manage-card-icon.OutsideCampus { background: #d1fae5; color: var(--outside-campus); }
+.manage-card-icon.General { background: #f3f4f6; color: var(--general); }
+.manage-card-title { font-size: 13px; font-weight: 600; color: var(--text-dark); line-height: 1.3; padding-right: 20px; }
+.manage-card-desc { font-size: 12px; color: var(--text-light); margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.manage-posted { font-size: 11px; color: var(--text-light); margin-bottom: 6px; }
+.manage-card-chips { display: flex; flex-direction: column; gap: 3px; margin-bottom: 8px; }
+.manage-chip { font-size: 11px; color: var(--text-light); display: flex; align-items: center; gap: 5px; }
+.manage-chip i { color: var(--primary); font-size: 10px; width: 12px; text-align: center; }
+.manage-card-meta { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+.manage-card-date { font-size: 11px; color: var(--text-light); display: flex; align-items: center; gap: 4px; }
+.manage-card-cat { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; }
+.manage-card-cat.Academic { background: #dbeafe; color: var(--academic); }
+.manage-card-cat.Event { background: #ede9fe; color: var(--event); }
+.manage-card-cat.OutsideCampus { background: #d1fae5; color: var(--outside-campus); }
+.manage-card-cat.General { background: #f3f4f6; color: var(--general); }
+.manage-card-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.btn-sm-edit { flex: 1; padding: 5px 10px; border: 1.5px solid #e5e7eb; border-radius: 6px; background: white; color: var(--text-dark); font-size: 12px; font-weight: 500; cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.2s; }
+.btn-sm-edit:hover { border-color: var(--primary-light); color: var(--primary); }
+.btn-sm-pin { flex: 1; padding: 5px 10px; border: 1.5px solid #e5e7eb; border-radius: 6px; background: white; color: var(--text-light); font-size: 12px; font-weight: 500; cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 4px; }
+.btn-sm-pin:hover { border-color: #f59e0b; color: #d97706; background: #fffbeb; }
+.btn-sm-pin.active { background: #fef3c7; border-color: #f59e0b; color: #92400e; }
+.btn-sm-delete { flex: 1; padding: 5px 10px; border: none; border-radius: 6px; background: #ef4444; color: white; font-size: 12px; font-weight: 500; cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.2s; }
+.btn-sm-delete:hover { background: #dc2626; }
+.pagination-row { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 14px; border-top: 1px solid #f0f0f0; }
+.page-info { font-size: 13px; color: var(--text-light); }
+.page-btns { display: flex; gap: 6px; }
+.page-btn { width: 30px; height: 30px; border-radius: 8px; border: 1.5px solid #e5e7eb; background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 13px; color: var(--text-dark); transition: all 0.2s; }
+.page-btn:hover { border-color: var(--primary-light); color: var(--primary); }
+
+/* ===== FULL CALENDAR ===== */
+.calendar-full { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.cal-full-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.cal-full-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+.cal-full-day-label { text-align: center; font-size: 13px; font-weight: 600; color: var(--text-light); padding: 8px 0; }
+.cal-full-cell { min-height: 80px; border: 1.5px solid #f0f0f0; border-radius: 10px; padding: 8px; cursor: pointer; transition: all 0.2s; }
+.cal-full-cell:hover { border-color: var(--primary-light); background: #faf5ff; }
+.cal-full-cell.today { border-color: var(--primary); background: #faf5ff; }
+.cal-full-cell.other-month { opacity: 0.4; }
+.cell-num { font-size: 14px; font-weight: 600; color: var(--text-dark); margin-bottom: 4px; }
+.cal-full-cell.today .cell-num { width: 26px; height: 26px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+.cell-event { font-size: 10px; padding: 2px 6px; border-radius: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+.cell-event.Academic { background: #dbeafe; color: var(--academic); }
+.cell-event.Event { background: #ede9fe; color: var(--event); }
+.cell-event.OutsideCampus { background: #d1fae5; color: var(--outside-campus); }
+.cell-event.General { background: #f3f4f6; color: var(--general); }
+
+/* ===== PROFILE ===== */
+.profile-card { background: white; border-radius: 20px; padding: 36px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); max-width: 640px; }
+.profile-banner { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); border-radius: 14px; padding: 28px 24px; display: flex; align-items: center; gap: 20px; margin-bottom: 28px; }
+.profile-avatar-circle { width: 72px; height: 72px; border-radius: 50%; background: rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; border: 3px solid rgba(255,255,255,0.5); font-size: 30px; font-weight: 700; color: white; flex-shrink: 0; }
+.profile-banner-info { flex: 1; }
+.profile-name { font-size: 22px; font-weight: 700; color: white; margin-bottom: 4px; }
+.profile-role-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.2); color: white; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); }
+.profile-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.profile-field { background: #f9fafb; border-radius: 12px; padding: 16px; border: 1.5px solid #f0f0f0; }
+.profile-field-label { font-size: 11px; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.profile-field-label i { color: var(--primary); font-size: 12px; }
+.profile-field-value { font-size: 15px; font-weight: 600; color: var(--text-dark); }
+.profile-field.full-width { grid-column: span 2; }
+.birthday-highlight { background: linear-gradient(135deg, #fef3c7, #fde68a); border-color: #f59e0b; }
+.birthday-highlight .profile-field-label i { color: #d97706; }
+.birthday-highlight .profile-field-value { color: #92400e; }
+
+/* ===== MISC ===== */
+.today-badge { display: inline-flex; align-items: center; gap: 4px; background: #d1fae5; color: #059669; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; margin-left: 8px; }
+.empty-state { text-align: center; padding: 40px; color: var(--text-light); }
+.empty-state i { font-size: 48px; opacity: 0.3; margin-bottom: 12px; display: block; }
+.empty-state p { font-size: 15px; }
+.toast { position: fixed; bottom: 24px; right: 24px; background: var(--primary); color: white; padding: 14px 22px; border-radius: 12px; font-size: 14px; font-weight: 500; box-shadow: 0 8px 24px rgba(91,33,182,0.3); z-index: 999; transform: translateY(80px); opacity: 0; transition: all 0.3s ease; }
+.toast.show { transform: translateY(0); opacity: 1; }
+.cancel-btn { width: 100%; padding: 10px; border: 1.5px solid #e5e7eb; border-radius: 10px; background: white; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--text-light); margin-top: 10px; transition: all 0.2s; display: none; }
+.cancel-btn:hover { border-color: #ef4444; color: #ef4444; }
+.date-hint { font-size: 12px; color: var(--text-light); margin-top: -12px; margin-bottom: 16px; display: flex; align-items: center; gap: 5px; }
+.date-hint i { color: var(--accent); font-size: 11px; }
+.image-preview-box { display: none; margin-bottom: 12px; border-radius: 10px; overflow: hidden; border: 1.5px solid #e5e7eb; }
+.image-preview-box img { width: 100%; max-height: 140px; object-fit: cover; display: block; }
+.image-preview-meta { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; background: #f9fafb; }
+.image-preview-meta span { font-size: 12px; color: var(--text-light); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 160px; }
+.image-preview-meta button { background: none; border: none; color: #ef4444; font-size: 12px; cursor: pointer; font-family: 'Outfit', sans-serif; flex-shrink: 0; }
+.form-divider { border: none; border-top: 1.5px dashed #e5e7eb; margin: 20px 0 18px; }
+
+/* ===== FEATURES MODAL ===== */
+#featuresModal { position: fixed; inset: 0; z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(0,0,0,0); pointer-events: none; visibility: hidden; transition: background 0.3s ease; }
+#featuresModal.open { background: rgba(0,0,0,0.6); pointer-events: all; visibility: visible; }
+.features-modal-inner { background: white; border-radius: 24px; width: 100%; max-width: 680px; max-height: 88vh; overflow-y: auto; padding: 36px; transform: scale(0.85) translateY(20px); opacity: 0; transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease; box-shadow: 0 30px 80px rgba(0,0,0,0.3); }
+#featuresModal.open .features-modal-inner { transform: scale(1) translateY(0); opacity: 1; }
+.modal-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 28px; }
+.modal-header-left { display: flex; align-items: center; gap: 16px; }
+.modal-logo { width: 52px; height: 52px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+.modal-logo i { color: white; font-size: 24px; }
+.modal-title { font-size: 22px; font-weight: 700; color: var(--text-dark); margin-bottom: 2px; }
+.modal-subtitle { font-size: 14px; color: var(--text-light); }
+.modal-close { width: 36px; height: 36px; border-radius: 10px; border: 1.5px solid #e5e7eb; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--text-light); transition: all 0.2s; flex-shrink: 0; }
+.modal-close:hover { background: #fee2e2; border-color: #fca5a5; color: #ef4444; }
+.features-section-title { font-size: 12px; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; margin-top: 24px; }
+.features-section-title:first-of-type { margin-top: 0; }
+.feature-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.feature-card { border-radius: 14px; padding: 16px; border: 1.5px solid #f0f0f0; display: flex; align-items: flex-start; gap: 12px; transition: all 0.2s; }
+.feature-card:hover { border-color: var(--primary-light); background: #faf5ff; }
+.feature-card-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.feature-card-icon.purple { background: #ede9fe; color: var(--primary); }
+.feature-card-icon.blue { background: #dbeafe; color: var(--academic); }
+.feature-card-icon.amber { background: #fef3c7; color: var(--accent); }
+.feature-card-icon.red { background: #fee2e2; color: #ef4444; }
+.feature-card-icon.green { background: #d1fae5; color: #059669; }
+.feature-card-icon.gray { background: #f3f4f6; color: var(--general); }
+.feature-card-name { font-size: 14px; font-weight: 600; color: var(--text-dark); margin-bottom: 3px; }
+.feature-card-desc { font-size: 12px; color: var(--text-light); line-height: 1.5; }
+.admin-only-note { margin-top: 20px; padding: 14px 16px; background: linear-gradient(135deg, #ede9fe, #dbeafe); border-radius: 12px; border: 1px solid #c4b5fd; display: flex; align-items: center; gap: 12px; }
+.admin-only-note i { color: var(--primary); font-size: 18px; flex-shrink: 0; }
+.admin-only-note p { font-size: 13px; color: var(--primary-dark); line-height: 1.5; }
+.modal-footer { margin-top: 24px; padding-top: 20px; border-top: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.modal-footer-tip { font-size: 13px; color: var(--text-light); display: flex; align-items: center; gap: 6px; }
+.modal-footer-tip i { color: var(--accent); }
+.got-it-btn { padding: 10px 24px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; font-family: 'Outfit', sans-serif; cursor: pointer; transition: all 0.2s; }
+.got-it-btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+/* ===== BIRTHDAY MODAL ===== */
+#birthdayModal { position: fixed; inset: 0; z-index: 10001; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(0,0,0,0); pointer-events: none; visibility: hidden; transition: background 0.4s ease; }
+#birthdayModal.open { background: rgba(0,0,0,0.65); pointer-events: all; visibility: visible; }
+.birthday-modal-inner { background: white; border-radius: 28px; width: 100%; max-width: 480px; padding: 40px 36px; text-align: center; position: relative; overflow: hidden; transform: scale(0.7) translateY(40px); opacity: 0; transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease; box-shadow: 0 40px 80px rgba(0,0,0,0.35); }
+#birthdayModal.open .birthday-modal-inner { transform: scale(1) translateY(0); opacity: 1; }
+.birthday-confetti-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; border-radius: 28px; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 30%, #ede9fe 60%, #dbeafe 100%); opacity: 0.4; }
+.birthday-emoji { font-size: 72px; margin-bottom: 16px; display: block; animation: bdBounce 1s ease infinite alternate; }
+@keyframes bdBounce { from { transform: scale(1) rotate(-5deg); } to { transform: scale(1.1) rotate(5deg); } }
+.birthday-modal-title { font-size: 30px; font-weight: 800; color: var(--primary-dark); margin-bottom: 8px; position: relative; }
+.birthday-modal-name { font-size: 22px; font-weight: 700; color: var(--primary-light); margin-bottom: 12px; position: relative; }
+.birthday-modal-msg { font-size: 15px; color: var(--text-light); margin-bottom: 28px; line-height: 1.6; position: relative; }
+.birthday-modal-btn { padding: 13px 36px; background: linear-gradient(135deg, #f59e0b, #fbbf24); color: white; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.3s; box-shadow: 0 4px 16px rgba(245,158,11,0.4); position: relative; }
+.birthday-modal-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(245,158,11,0.5); }
+.bd-sparkle { position: absolute; width: 8px; height: 8px; border-radius: 50%; animation: sparkle 2s ease-in-out infinite; }
+@keyframes sparkle { 0%,100% { opacity: 0; transform: scale(0); } 50% { opacity: 1; transform: scale(1); } }
+
+/* ===== BIRTHDAY BANNER ===== */
+#birthdayBanner { display: none; margin-bottom: 20px; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(245,158,11,0.2); animation: slideDown 0.5s ease-out; }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+.bd-banner-inner { background: linear-gradient(135deg, #fffbeb, #fef3c7, #ede9fe); border: 2px solid #fde68a; border-radius: 16px; padding: 16px 20px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.bd-banner-icon { font-size: 32px; flex-shrink: 0; animation: bdBounce 1.2s ease infinite alternate; }
+.bd-banner-text { flex: 1; min-width: 0; }
+.bd-banner-title { font-size: 15px; font-weight: 700; color: #92400e; margin-bottom: 2px; }
+.bd-banner-names { font-size: 13px; color: #b45309; font-weight: 500; }
+.bd-banner-close { width: 28px; height: 28px; border-radius: 8px; border: none; background: rgba(245,158,11,0.15); cursor: pointer; display: flex; align-items: center; justify-content: center; color: #b45309; font-size: 14px; transition: all 0.2s; flex-shrink: 0; }
+.bd-banner-close:hover { background: rgba(245,158,11,0.3); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .auth-container { grid-template-columns: 1fr; }
+  .auth-brand { display: none; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .dashboard-grid, .create-grid { grid-template-columns: 1fr; }
+  .manage-ann-grid { grid-template-columns: 1fr; }
+  .form-row-2c { grid-template-columns: 1fr; }
+  .feature-cards-grid { grid-template-columns: 1fr; }
+  .profile-fields { grid-template-columns: 1fr; }
+  .profile-field.full-width { grid-column: span 1; }
+}
+.mob-menu-btn { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 40px; height: 40px; background: none; border: none; cursor: pointer; flex-shrink: 0; border-radius: 10px; padding: 6px; transition: background 0.2s; }
+.mob-menu-btn:hover { background: rgba(91,33,182,0.08); }
+.mob-menu-btn span { display: block; width: 22px; height: 2.5px; background: var(--text-dark); border-radius: 3px; transition: all 0.3s ease; transform-origin: center; }
+.mob-menu-btn.is-open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.mob-menu-btn.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.mob-menu-btn.is-open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+.mob-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); backdrop-filter: blur(2px); z-index: 99; opacity: 0; transition: opacity 0.3s ease; }
+.mob-overlay.show { display: block; opacity: 1; }
+.mob-topbar-logo { display: none; align-items: center; gap: 8px; flex: 1; justify-content: center; }
+.mob-topbar-logo .tl-icon { width: 30px; height: 30px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+.mob-topbar-logo .tl-icon i { color: white; font-size: 14px; }
+.mob-topbar-logo span { font-size: 18px; font-weight: 800; color: var(--text-dark); letter-spacing: 1.5px; }
+@media (max-width: 768px) {
+  .sidebar { left: -100%; width: 260px; z-index: 200; box-shadow: none; }
+  .sidebar.open { left: 0; box-shadow: 6px 0 32px rgba(0,0,0,0.35); }
+  .main-content { margin-left: 0; border-radius: 0; }
+  .topbar { border-radius: 0; padding: 12px 16px; }
+  .mob-menu-btn { display: flex; }
+  .mob-topbar-logo { display: flex; }
+  .search-bar { display: none; }
+  .page-content { padding: 16px; }
+  .page-header h2 { font-size: 22px; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .cal-full-cell { min-height: 56px; padding: 5px; }
+  .cell-event { font-size: 9px; }
+  .toast { bottom: 20px; right: 12px; left: 12px; text-align: center; }
+  .features-modal-inner { padding: 24px; }
+  .feature-cards-grid { grid-template-columns: 1fr; }
+  .auth-form-section { padding: 30px 24px; }
+  .profile-fields { grid-template-columns: 1fr; }
+
+  /* ===== MOBILE ANNOUNCEMENT CARD FIX ===== */
+  .ann-item { flex-direction: column !important; gap: 10px; padding: 14px; }
+  .ann-body { width: 100% !important; min-width: 0 !important; word-break: break-word !important; overflow-wrap: break-word !important; }
+  .ann-title { font-size: 15px; white-space: normal !important; word-break: break-word !important; line-height: 1.4; margin-bottom: 5px; }
+  .ann-desc { white-space: normal !important; word-break: break-word !important; overflow-wrap: break-word !important; width: 100% !important; display: block !important; font-size: 13px; line-height: 1.65; }
+  .ann-extra { flex-wrap: wrap !important; gap: 6px; }
+  .ann-extra-chip { font-size: 11px; padding: 4px 8px; white-space: normal; max-width: 100%; }
+  .ann-item > div:last-child { flex-direction: row !important; flex-wrap: wrap !important; align-items: center !important; justify-content: space-between !important; width: 100%; gap: 8px; margin-top: 0; }
+  .ann-posted { font-size: 11px; white-space: nowrap; }
+  .ann-actions { flex-wrap: wrap; gap: 6px; justify-content: flex-start !important; }
+  .btn-pin, .btn-edit, .btn-delete { font-size: 12px; padding: 5px 10px; }
+  .ann-cat-icon { width: 30px !important; height: 30px !important; font-size: 13px !important; }
+  .ann-meta { flex-wrap: wrap; }
+  .panel, .ann-list { overflow: hidden; }
+  .pinned-section-header { padding: 8px 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loadingScreen">
+  <div class="loading-logo"><i class="fa-solid fa-bullhorn"></i></div>
+  <h2>SCEM</h2>
+  <div class="loading-spinner"></div>
+  <p>Connecting to database...</p>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightboxOverlay" onclick="closeLightbox(event)">
+  <div class="lightbox-inner" onclick="event.stopPropagation()">
+    <button class="lightbox-close" onclick="closeLightbox()" title="Close"><i class="fa-solid fa-xmark"></i></button>
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+</div>
+
+<!-- FEATURES MODAL -->
+<div id="featuresModal" onclick="handleModalOverlayClick(event)">
+  <div class="features-modal-inner" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-logo"><i class="fa-solid fa-bullhorn"></i></div>
+        <div><div class="modal-title">SCEM Portal Guide</div><div class="modal-subtitle">Everything you need to know</div></div>
+      </div>
+      <button class="modal-close" onclick="closeFeaturesModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="features-section-title">📋 Core Features</div>
+    <div class="feature-cards-grid">
+      <div class="feature-card"><div class="feature-card-icon purple"><i class="fa-solid fa-house"></i></div><div><div class="feature-card-name">Dashboard</div><div class="feature-card-desc">Your home screen showing stats, latest announcements, a mini calendar, and upcoming events.</div></div></div>
+      <div class="feature-card"><div class="feature-card-icon blue"><i class="fa-solid fa-bullhorn"></i></div><div><div class="feature-card-name">Announcements</div><div class="feature-card-desc">Browse all school announcements. Filter by category and sort by date or name.</div></div></div>
+      <div class="feature-card"><div class="feature-card-icon amber"><i class="fa-solid fa-calendar-days"></i></div><div><div class="feature-card-name">Calendar</div><div class="feature-card-desc">Full monthly calendar view showing all events mapped to their dates.</div></div></div>
+      <div class="feature-card"><div class="feature-card-icon green"><i class="fa-solid fa-magnifying-glass"></i></div><div><div class="feature-card-name">Search & Filter</div><div class="feature-card-desc">Search announcements by keyword and use category filters to narrow results.</div></div></div>
+      <div class="feature-card"><div class="feature-card-icon red"><i class="fa-solid fa-bell"></i></div><div><div class="feature-card-name">Categories</div><div class="feature-card-desc"><strong>Academic</strong>, <strong>Event</strong>, and <strong>Outside Campus</strong> announcement types.</div></div></div>
+      <div class="feature-card"><div class="feature-card-icon gray"><i class="fa-solid fa-circle-user"></i></div><div><div class="feature-card-name">Profile</div><div class="feature-card-desc">View your account info including name, email, role, and birthday.</div></div></div>
+    </div>
+    <div class="features-section-title">🛠️ Admin-Only Features</div>
+    <div class="feature-cards-grid">
+      <div class="feature-card"><div class="feature-card-icon purple"><i class="fa-solid fa-pen-to-square"></i></div><div><div class="feature-card-name">Create Post</div><div class="feature-card-desc">Post announcements with title, description, category, date, time, venue, and person in charge.</div></div></div>
+      <div class="feature-card"><div class="feature-card-icon amber"><i class="fa-solid fa-thumbtack"></i></div><div><div class="feature-card-name">Pin Announcements</div><div class="feature-card-desc">Pin important announcements so they always appear at the top of the list for all users.</div></div></div>
+      <div class="feature-card"><div class="feature-card-icon blue"><i class="fa-solid fa-image"></i></div><div><div class="feature-card-name">Image Uploads</div><div class="feature-card-desc">Attach images to announcements (max 5 MB). Viewable full-screen.</div></div></div>
+      <div class="feature-card"><div class="feature-card-icon red"><i class="fa-solid fa-trash"></i></div><div><div class="feature-card-name">Delete Announcements</div><div class="feature-card-desc">Remove announcements permanently from the manage grid.</div></div></div>
+    </div>
+    <div class="admin-only-note">
+      <i class="fa-solid fa-shield-halved"></i>
+      <p><strong>Admin accounts</strong> have full access to create, edit, pin, and delete announcements. <strong>Student accounts</strong> can view and search all content but cannot post or modify it.</p>
+    </div>
+    <div class="modal-footer">
+      <div class="modal-footer-tip"><i class="fa-solid fa-lightbulb"></i> Tip: Click the <strong>?</strong> button anytime to reopen this guide.</div>
+      <button class="got-it-btn" onclick="closeFeaturesModal()">Got it! 👍</button>
+    </div>
+  </div>
+</div>
+
+<!-- BIRTHDAY MODAL -->
+<div id="birthdayModal">
+  <div class="birthday-modal-inner">
+    <div class="birthday-confetti-bg"></div>
+    <div class="bd-sparkle" style="top:12%;left:8%;background:#f59e0b;animation-delay:0s;"></div>
+    <div class="bd-sparkle" style="top:20%;right:10%;background:#7c3aed;animation-delay:0.4s;"></div>
+    <div class="bd-sparkle" style="bottom:18%;left:14%;background:#ec4899;animation-delay:0.8s;"></div>
+    <div class="bd-sparkle" style="bottom:25%;right:8%;background:#2563eb;animation-delay:1.2s;"></div>
+    <div class="bd-sparkle" style="top:55%;left:5%;background:#f59e0b;animation-delay:0.6s;"></div>
+    <div class="bd-sparkle" style="top:40%;right:5%;background:#10b981;animation-delay:1s;"></div>
+    <span class="birthday-emoji">🎂</span>
+    <div class="birthday-modal-title">🎉 Happy Birthday! 🎉</div>
+    <div class="birthday-modal-name" id="bdModalName"></div>
+    <div class="birthday-modal-msg">Wishing you a wonderful day filled with joy, laughter, and happiness! May this year bring you all the best. 🌟🎈</div>
+    <button class="birthday-modal-btn" onclick="closeBirthdayModal()">Thank you! 🥳</button>
+  </div>
+</div>
+
+<!-- AUTH PAGE -->
+<div id="authPage" style="display:none;">
+  <div class="auth-container">
+    <div class="auth-brand">
+      <div class="brand-content">
+        <div class="school-logo"><div class="logo-circle"><i class="fa-solid fa-bullhorn"></i></div></div>
+        <h1>SCEM</h1>
+        <p class="tagline">School Announcements &amp; Events Portal</p>
+        <div class="brand-features">
+          <div class="brand-feature-item"><i class="fa-solid fa-bullhorn"></i><span>Real-time Announcements</span></div>
+          <div class="brand-feature-item"><i class="fa-solid fa-calendar-days"></i><span>Event Calendar</span></div>
+          <div class="brand-feature-item"><i class="fa-solid fa-shield-halved"></i><span>GFIS Students Only</span></div>
+        </div>
+      </div>
+      <div class="decorative-shapes">
+        <div class="shape shape-1"></div><div class="shape shape-2"></div><div class="shape shape-3"></div>
+      </div>
+    </div>
+    <div class="auth-form-section">
+      <div class="auth-box">
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="tabSignIn" onclick="switchTab('signin')"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
+          <button class="auth-tab" id="tabSignUp" onclick="switchTab('signup')"><i class="fa-solid fa-user-plus"></i> Sign Up</button>
+        </div>
+        <!-- SIGN IN -->
+        <div class="auth-panel active" id="signinPanel">
+          <div class="auth-panel-title">Welcome Back!</div>
+          <div class="auth-panel-sub">Sign in with your GFIS school email</div>
+          <div id="signinError" class="error-msg"><i class="fa-solid fa-circle-exclamation"></i><span></span></div>
+          <div class="input-group">
+            <label><i class="fa-solid fa-envelope"></i> Email Address</label>
+            <input type="email" id="siEmail" placeholder="yourname@gfis.edu.ph" autocomplete="email">
+          </div>
+          <div class="input-group">
+            <label><i class="fa-solid fa-lock"></i> Password</label>
+            <div class="password-wrapper">
+              <input type="password" id="siPassword" placeholder="Enter your password" autocomplete="current-password">
+              <button type="button" class="toggle-password" onclick="togglePw('siPassword','siPwIcon')"><i class="fa-solid fa-eye" id="siPwIcon"></i></button>
+            </div>
+          </div>
+          <div class="domain-hint"><i class="fa-solid fa-circle-info"></i> Only @gfis.edu.ph email addresses are accepted.</div>
+          <br>
+          <button class="auth-btn" id="signinBtn" onclick="doSignIn()"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
+          <div class="auth-switch">Don't have an account? <a onclick="switchTab('signup')">Sign Up here</a></div>
+        </div>
+        <!-- SIGN UP -->
+        <div class="auth-panel" id="signupPanel">
+          <div class="auth-panel-title">Create Account</div>
+          <div class="auth-panel-sub">Register with your GFIS school email as a Student</div>
+          <div id="signupError" class="error-msg"><i class="fa-solid fa-circle-exclamation"></i><span></span></div>
+          <div id="signupSuccess" class="success-msg"><i class="fa-solid fa-circle-check"></i><span></span></div>
+          <div class="form-row-2">
+            <div class="input-group">
+              <label><i class="fa-solid fa-user"></i> First Name</label>
+              <input type="text" id="suFirstName" placeholder="Juan">
+            </div>
+            <div class="input-group">
+              <label><i class="fa-solid fa-user"></i> Last Name</label>
+              <input type="text" id="suLastName" placeholder="dela Cruz">
+            </div>
+          </div>
+          <div class="input-group">
+            <label><i class="fa-solid fa-envelope"></i> School Email</label>
+            <input type="email" id="suEmail" placeholder="yourname@gfis.edu.ph" autocomplete="email">
+            <div class="domain-hint"><i class="fa-solid fa-circle-info"></i> Must be a @gfis.edu.ph address.</div>
+          </div>
+          <div class="input-group">
+            <label><i class="fa-solid fa-cake-candles"></i> Birthday</label>
+            <input type="date" id="suBirthday">
+          </div>
+          <div class="input-group">
+            <label><i class="fa-solid fa-lock"></i> Password</label>
+            <div class="password-wrapper">
+              <input type="password" id="suPassword" placeholder="At least 6 characters" autocomplete="new-password">
+              <button type="button" class="toggle-password" onclick="togglePw('suPassword','suPwIcon')"><i class="fa-solid fa-eye" id="suPwIcon"></i></button>
+            </div>
+          </div>
+          <div class="input-group">
+            <label><i class="fa-solid fa-lock"></i> Confirm Password</label>
+            <div class="password-wrapper">
+              <input type="password" id="suConfirm" placeholder="Repeat password">
+              <button type="button" class="toggle-password" onclick="togglePw('suConfirm','suCfIcon')"><i class="fa-solid fa-eye" id="suCfIcon"></i></button>
+            </div>
+          </div>
+          <button class="auth-btn" id="signupBtn" onclick="doSignUp()"><i class="fa-solid fa-user-plus"></i> Create Account</button>
+          <div class="auth-switch">Already have an account? <a onclick="switchTab('signin')">Sign In here</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <div class="mob-overlay" id="mobOverlay" onclick="closeSidebar()"></div>
+  <div class="app-wrapper">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon"><i class="fa-solid fa-bullhorn"></i></div>
+        <span class="logo-text">SCEM</span>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-item active" onclick="showPage('dashboardPage',this)"><i class="fa-solid fa-house"></i><span>Dashboard</span></button>
+        <button class="nav-item" onclick="showPage('announcementsPage',this)"><i class="fa-solid fa-bullhorn"></i><span>Announcements</span></button>
+        <button class="nav-item" id="createPostNav" onclick="showPage('createPage',this)" style="display:none;"><i class="fa-solid fa-pen-to-square"></i><span>Create Post</span></button>
+        <button class="nav-item" onclick="showPage('calendarPage',this)"><i class="fa-solid fa-calendar-days"></i><span>Calendar</span></button>
+        <button class="nav-item" onclick="showPage('profilePage',this)"><i class="fa-solid fa-circle-user"></i><span>Profile</span></button>
+        <button class="nav-item" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
+      </nav>
+      <div class="sidebar-user">
+        <div class="user-avatar" id="sidebarAvatar">?</div>
+        <div class="user-info"><div class="user-name" id="sidebarName"></div><div class="user-email" id="sidebarEmail"></div></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="topbar">
+        <button class="mob-menu-btn" id="mobMenuBtn" onclick="openSidebar()"><span></span><span></span><span></span></button>
+        <div class="mob-topbar-logo"><div class="tl-icon"><i class="fa-solid fa-bullhorn"></i></div><span>SCEM</span></div>
+        <div class="search-bar" id="topSearchBar">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="topSearch" placeholder="Search announcements..." oninput="handleTopSearch()" onkeydown="if(event.key==='Enter')submitTopSearch()">
+          <button id="topSearchClear" onclick="clearTopSearch()" style="display:none;background:none;border:none;cursor:pointer;color:var(--text-light);padding:2px 4px;font-size:13px;line-height:1;" title="Clear"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <button class="help-btn" onclick="openFeaturesModal()" title="Website Guide"><i class="fa-solid fa-question"></i></button>
+      </div>
+
+      <div class="page-content">
+
+        <!-- DASHBOARD PAGE -->
+        <div id="dashboardPage" class="page active">
+          <div class="page-header">
+            <div class="page-title-row"><div class="page-icon"><i class="fa-solid fa-house"></i></div><h2 id="dashWelcome">Welcome back!</h2></div>
+            <p>Stay up-to-date with school announcements. 📢</p>
+          </div>
+          <div id="birthdayBanner">
+            <div class="bd-banner-inner">
+              <span class="bd-banner-icon">🎂</span>
+              <div class="bd-banner-text">
+                <div class="bd-banner-title">🎉 Birthday Celebration Today!</div>
+                <div class="bd-banner-names" id="bdBannerNames"></div>
+              </div>
+              <button class="bd-banner-close" onclick="document.getElementById('birthdayBanner').style.display='none'" title="Dismiss"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+          </div>
+          <div class="stats-row">
+            <div class="stat-card"><div class="stat-icon purple"><i class="fa-solid fa-bullhorn"></i></div><div class="stat-info"><div class="stat-label">Total</div><div class="stat-sublabel">Announcements</div><div class="stat-value" id="statTotal">0</div></div></div>
+            <div class="stat-card"><div class="stat-icon blue"><i class="fa-solid fa-briefcase"></i></div><div class="stat-info"><div class="stat-label">Today's</div><div class="stat-sublabel">Events</div><div class="stat-value" id="statToday">0</div></div></div>
+            <div class="stat-card"><div class="stat-icon red"><i class="fa-solid fa-clock"></i></div><div class="stat-info"><div class="stat-label">Upcoming</div><div class="stat-sublabel">Events</div><div class="stat-value" id="statUpcoming">0</div></div></div>
+            <div class="stat-card"><div class="stat-icon amber"><i class="fa-solid fa-thumbtack"></i></div><div class="stat-info"><div class="stat-label">Pinned</div><div class="stat-sublabel">Announcements</div><div class="stat-value" id="statPinned">0</div></div></div>
+          </div>
+          <div class="dashboard-grid">
+            <div class="panel">
+              <div class="panel-header">
+                <div class="panel-title">Latest Announcements</div>
+                <select class="sort-btn" id="dashSortSelect" onchange="renderDashList()"><option value="latest">Latest ▾</option><option value="oldest">Oldest</option><option value="az">A–Z</option></select>
+              </div>
+              <div class="panel-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="dashSearch" placeholder="Search announcements..." oninput="syncSearchFromPanel('dash')"></div>
+              <div class="filter-tabs" id="dashFilterTabs">
+                <button class="filter-tab active" onclick="setFilter('dash','All',this)">All</button>
+                <button class="filter-tab" onclick="setFilter('dash','Academic',this)">Academic</button>
+                <button class="filter-tab" onclick="setFilter('dash','Event',this)">Events</button>
+                <button class="filter-tab" onclick="setFilter('dash','OutsideCampus',this)">Outside Campus</button>
+              </div>
+              <div class="ann-list" id="dashAnnList"></div>
+            </div>
+            <div class="calendar-panel">
+              <div class="mini-calendar">
+                <div class="cal-header">
+                  <button class="cal-nav" onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                  <div class="cal-month" id="miniCalMonth"></div>
+                  <button class="cal-nav" onclick="changeMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+                <div class="cal-grid" id="miniCalGrid"></div>
+              </div>
+              <div class="upcoming-panel">
+                <div class="upcoming-title">Upcoming Events</div>
+                <div class="upcoming-list" id="upcomingList"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ANNOUNCEMENTS PAGE -->
+        <div id="announcementsPage" class="page">
+          <div class="page-header">
+            <div class="page-title-row"><div class="page-icon"><i class="fa-solid fa-bullhorn"></i></div><h2>Announcements</h2></div>
+            <p>Browse all school announcements and updates.</p>
+          </div>
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">All Announcements</div>
+              <select class="sort-btn" id="annSortSelect" onchange="renderAnnList()"><option value="latest">Latest ▾</option><option value="oldest">Oldest</option><option value="az">A–Z</option></select>
+            </div>
+            <div class="panel-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="annSearch" placeholder="Search announcements..." oninput="syncSearchFromPanel('ann')"></div>
+            <div class="filter-tabs" id="annFilterTabs">
+              <button class="filter-tab active" onclick="setFilter('ann','All',this)">All</button>
+              <button class="filter-tab" onclick="setFilter('ann','Academic',this)">Academic</button>
+              <button class="filter-tab" onclick="setFilter('ann','Event',this)">Events</button>
+              <button class="filter-tab" onclick="setFilter('ann','OutsideCampus',this)">Outside Campus</button>
+            </div>
+            <div class="ann-list" id="annListContainer"></div>
+          </div>
+        </div>
+
+        <!-- CREATE PAGE (Admin) -->
+        <div id="createPage" class="page">
+          <div class="page-header">
+            <div class="page-title-row"><div class="page-icon"><i class="fa-solid fa-pen-to-square"></i></div><h2 id="createPageTitle">Create Announcement</h2></div>
+            <p>Fill in the details to post a new school announcement.</p>
+          </div>
+          <div class="create-grid">
+            <div>
+              <div class="create-form-panel">
+                <div class="form-section-label"><i class="fa-solid fa-heading"></i> Title <span class="posted-hint" id="postedHint"></span></div>
+                <input type="text" class="form-input" id="titleInput" placeholder="Enter announcement title...">
+                <div class="form-section-label"><i class="fa-solid fa-align-left"></i> Description</div>
+                <textarea class="form-input" id="descInput" placeholder="Enter description..."></textarea>
+                <div class="form-section-label"><i class="fa-solid fa-layer-group"></i> Category</div>
+                <div class="category-select-wrapper">
+                  <i class="fa-solid fa-layer-group cat-icon"></i>
+                  <select class="form-select" id="categoryInput">
+                    <option value="Academic">Academic</option>
+                    <option value="Event">Event</option>
+                    <option value="OutsideCampus">Outside Campus</option>
+                  </select>
+                  <i class="fa-solid fa-chevron-down select-arrow"></i>
+                </div>
+                <div class="form-section-label"><i class="fa-solid fa-calendar-days"></i> Date &amp; Time</div>
+                <div class="form-row-2c">
+                  <div class="form-input-icon-wrap"><i class="fa-solid fa-calendar fii"></i><input type="date" class="form-input" id="dateInput"></div>
+                  <div class="form-input-icon-wrap"><i class="fa-solid fa-clock fii"></i><input type="time" class="form-input" id="timeInput"></div>
+                </div>
+                <p class="date-hint"><i class="fa-solid fa-circle-info"></i> Only today or future dates. Time is optional.</p>
+                <hr class="form-divider">
+                <div class="form-section-label"><i class="fa-solid fa-location-dot"></i> Venue</div>
+                <div class="form-input-icon-wrap"><i class="fa-solid fa-location-dot fii"></i><input type="text" class="form-input" id="venueInput" placeholder="e.g. School Gymnasium, Room 101..."></div>
+                <div class="form-section-label"><i class="fa-solid fa-user-tie"></i> Person in Charge</div>
+                <div class="form-input-icon-wrap"><i class="fa-solid fa-user-tie fii"></i><input type="text" class="form-input" id="picInput" placeholder="e.g. Mr. Juan dela Cruz..."></div>
+                <hr class="form-divider">
+                <div class="form-section-label"><i class="fa-solid fa-thumbtack"></i> Pin Announcement</div>
+                <div class="pin-toggle-row" id="pinToggleRow" onclick="togglePinInput()">
+                  <div class="pin-toggle-left">
+                    <i class="fa-solid fa-thumbtack"></i>
+                    <div>
+                      <div class="pin-toggle-label">Pin to top</div>
+                      <div class="pin-toggle-sub">Pinned posts always appear first for all users</div>
+                    </div>
+                  </div>
+                  <label class="toggle-switch" onclick="event.stopPropagation()">
+                    <input type="checkbox" id="pinInput" onchange="syncPinToggleRow()">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <hr class="form-divider">
+                <button class="post-btn" id="postBtn" onclick="addAnnouncement()"><i class="fa-solid fa-bell"></i><span id="postBtnText">Post Announcement</span></button>
+                <button class="cancel-btn" id="cancelEditBtn" onclick="cancelEdit()">Cancel Edit</button>
+              </div>
+              <div style="margin-top:20px;">
+                <div class="panel">
+                  <div class="panel-header">
+                    <div class="panel-title">Manage Announcements</div>
+                    <select class="sort-btn" id="manageSortSelect" onchange="renderManageGrid()"><option value="latest">Sort ▾</option><option value="oldest">Oldest</option></select>
+                  </div>
+                  <div class="filter-tabs" id="manageFilterTabs">
+                    <button class="filter-tab active" onclick="setFilter('manage','All',this)">All</button>
+                    <button class="filter-tab" onclick="setFilter('manage','Academic',this)">Academic</button>
+                    <button class="filter-tab" onclick="setFilter('manage','Event',this)">Events</button>
+                    <button class="filter-tab" onclick="setFilter('manage','OutsideCampus',this)">Outside Campus</button>
+                  </div>
+                  <div class="manage-ann-grid" id="manageAnnGrid"></div>
+                  <div class="pagination-row">
+                    <div class="page-info" id="pageInfo">Page 1 of 1</div>
+                    <div class="page-btns">
+                      <button class="page-btn" onclick="changeMPage(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                      <button class="page-btn" onclick="changeMPage(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="manage-panel">
+              <div class="manage-title">Quick Actions</div>
+              <div class="manage-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="manageSideSearch" placeholder="Search..." oninput="renderManageGrid()"></div>
+              <div class="manage-filter-row">
+                <button class="manage-filter active" onclick="setManageSideFilter('All',this)">All</button>
+                <button class="manage-filter" onclick="setManageSideFilter('Academic',this)">Academic</button>
+                <button class="manage-filter" onclick="setManageSideFilter('Event',this)">Events</button>
+                <button class="manage-filter" onclick="setManageSideFilter('OutsideCampus',this)">Outside</button>
+              </div>
+              <div class="date-filter-input"><i class="fa-regular fa-calendar"></i><input type="date" id="manageDateFilter" onchange="renderManageGrid()"></div>
+              <input type="file" id="imageUploadInput" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
+              <button class="upload-img-btn" onclick="document.getElementById('imageUploadInput').click()"><i class="fa-solid fa-image"></i> Upload Image</button>
+              <div class="image-preview-box" id="imagePreviewBox">
+                <img id="imagePreviewImg" src="" alt="Preview">
+                <div class="image-preview-meta"><span id="imagePreviewName"></span><button onclick="clearImage()">✕ Remove</button></div>
+              </div>
+              <div class="manage-actions">
+                <button class="btn-edit" style="flex:1;" onclick="editSelected()">Edit</button>
+                <button class="btn-delete" style="flex:1;" onclick="deleteSelected()">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CALENDAR PAGE -->
+        <div id="calendarPage" class="page">
+          <div class="page-header">
+            <div class="page-title-row"><div class="page-icon"><i class="fa-solid fa-calendar-days"></i></div><h2>School Events Calendar</h2></div>
+            <p>View all events and announcements by date.</p>
+          </div>
+          <div class="calendar-full">
+            <div class="cal-full-header">
+              <button class="sort-btn" onclick="changeFullMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+              <div class="panel-title" id="fullCalMonth"></div>
+              <button class="sort-btn" onclick="changeFullMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+            <div class="cal-full-grid" id="fullCalGrid"></div>
+          </div>
+        </div>
+
+        <!-- PROFILE PAGE -->
+        <div id="profilePage" class="page">
+          <div class="page-header">
+            <div class="page-title-row"><div class="page-icon"><i class="fa-solid fa-circle-user"></i></div><h2>Profile</h2></div>
+            <p>Your account information.</p>
+          </div>
+          <div class="profile-card">
+            <div class="profile-banner">
+              <div class="profile-avatar-circle" id="profileAvatar">?</div>
+              <div class="profile-banner-info">
+                <div class="profile-name" id="profileNameDisplay">—</div>
+                <div class="profile-role-badge"><i class="fa-solid fa-id-badge"></i> <span id="profileRoleDisplay">—</span></div>
+              </div>
+            </div>
+            <div class="profile-fields">
+              <div class="profile-field"><div class="profile-field-label"><i class="fa-solid fa-user"></i> Full Name</div><div class="profile-field-value" id="pName">—</div></div>
+              <div class="profile-field"><div class="profile-field-label"><i class="fa-solid fa-envelope"></i> Email</div><div class="profile-field-value" id="pEmail">—</div></div>
+              <div class="profile-field"><div class="profile-field-label"><i class="fa-solid fa-id-badge"></i> Role</div><div class="profile-field-value" id="pRole">—</div></div>
+              <div class="profile-field birthday-highlight"><div class="profile-field-label"><i class="fa-solid fa-cake-candles"></i> Birthday</div><div class="profile-field-value" id="pBirthday">—</div></div>
+              <div class="profile-field full-width"><div class="profile-field-label"><i class="fa-solid fa-at"></i> School ID</div><div class="profile-field-value" id="pUid" style="font-size:12px;word-break:break-all;color:var(--text-light);">—</div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getFirestore, collection, addDoc, getDoc, getDocs, doc, setDoc,
+  updateDoc, deleteDoc, onSnapshot, serverTimestamp, query, orderBy
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import {
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  onAuthStateChanged, signOut
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCL04pwmGHAEOXpJ82NyJ3enX3e2wdDTRE",
+  authDomain: "scemdatabase.firebaseapp.com",
+  databaseURL: "https://scemdatabase-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "scemdatabase",
+  storageBucket: "scemdatabase.firebasestorage.app",
+  messagingSenderId: "666834093209",
+  appId: "1:666834093209:web:aa15cc4d6ba0ffdeebe408",
+  measurementId: "G-C67TCPV7NV"
+};
+
+const app    = initializeApp(firebaseConfig);
+const db     = getFirestore(app);
+const auth   = getAuth(app);
+const annCol = collection(db, "announcements");
+
+let userRole = "", userEmail = "", userName = "", userBirthday = "", currentUid = "";
+let announcements    = [];
+let editingId        = null;
+let filters          = { dash: "All", ann: "All", manage: "All" };
+let manageSideFilter = "All";
+let calViewDate      = new Date();
+let fullCalViewDate  = new Date();
+let managePage       = 1;
+const PER_PAGE       = 4;
+let selectedManageId  = null;
+let uploadedImageData = null;
+let unsubscribeAnn    = null;
+
+const MONTHS     = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const DAYS_SHORT = ["S","M","T","W","T","F","S"];
+const DAYS_FULL  = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+window.switchTab = function(tab) {
+  document.getElementById("tabSignIn").classList.toggle("active", tab === "signin");
+  document.getElementById("tabSignUp").classList.toggle("active", tab === "signup");
+  document.getElementById("signinPanel").classList.toggle("active", tab === "signin");
+  document.getElementById("signupPanel").classList.toggle("active", tab === "signup");
+  clearAuthErrors();
+};
+function clearAuthErrors() {
+  ["signinError","signupError","signupSuccess"].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove("show");
+    el.querySelector("span").textContent = "";
+  });
+}
+function showAuthError(id, msg) { const el = document.getElementById(id); el.querySelector("span").textContent = msg; el.classList.add("show"); }
+function showAuthSuccess(id, msg) { const el = document.getElementById(id); el.querySelector("span").textContent = msg; el.classList.add("show"); }
+
+window.togglePw = function(inputId, iconId) {
+  const p = document.getElementById(inputId); const i = document.getElementById(iconId);
+  p.type = p.type === "password" ? "text" : "password";
+  i.classList.toggle("fa-eye"); i.classList.toggle("fa-eye-slash");
+};
+
+window.doSignIn = async function() {
+  const email = document.getElementById("siEmail").value.trim();
+  const pwd   = document.getElementById("siPassword").value;
+  clearAuthErrors();
+  if (!email) { showAuthError("signinError", "Please enter your email address."); return; }
+  if (!email.endsWith("@gfis.edu.ph")) { showAuthError("signinError", "Only @gfis.edu.ph email addresses are allowed."); return; }
+  if (!pwd)   { showAuthError("signinError", "Please enter your password."); return; }
+  const btn = document.getElementById("signinBtn");
+  btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Signing in...';
+  try {
+    await signInWithEmailAndPassword(auth, email, pwd);
+  } catch(err) {
+    const msgs = { "auth/invalid-credential":"Incorrect email or password.","auth/user-not-found":"No account found with this email.","auth/wrong-password":"Incorrect password.","auth/too-many-requests":"Too many failed attempts. Please try again later.","auth/invalid-email":"Invalid email address." };
+    showAuthError("signinError", msgs[err.code] || "Sign in failed. Please try again.");
+  } finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Sign In'; }
+};
+
+window.doSignUp = async function() {
+  const firstName = document.getElementById("suFirstName").value.trim();
+  const lastName  = document.getElementById("suLastName").value.trim();
+  const email     = document.getElementById("suEmail").value.trim();
+  const birthday  = document.getElementById("suBirthday").value;
+  const pwd       = document.getElementById("suPassword").value;
+  const confirm   = document.getElementById("suConfirm").value;
+  clearAuthErrors();
+  if (!firstName || !lastName) { showAuthError("signupError", "Please enter your first and last name."); return; }
+  if (!email)    { showAuthError("signupError", "Please enter your school email."); return; }
+  if (!email.endsWith("@gfis.edu.ph")) { showAuthError("signupError", "Only @gfis.edu.ph email addresses are allowed."); return; }
+  if (!birthday) { showAuthError("signupError", "Please enter your birthday."); return; }
+  if (!pwd)      { showAuthError("signupError", "Please enter a password."); return; }
+  if (pwd.length < 6) { showAuthError("signupError", "Password must be at least 6 characters."); return; }
+  if (pwd !== confirm) { showAuthError("signupError", "Passwords do not match."); return; }
+  const btn = document.getElementById("signupBtn");
+  btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Creating account...';
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, pwd);
+    await setDoc(doc(db, "users", cred.user.uid), { name: `${firstName} ${lastName}`, email, birthday, role: "student", createdAt: serverTimestamp() });
+    showAuthSuccess("signupSuccess", `Account created! Welcome, ${firstName}! Signing you in...`);
+  } catch(err) {
+    const msgs = { "auth/email-already-in-use":"An account with this email already exists.","auth/invalid-email":"Invalid email address.","auth/weak-password":"Password is too weak." };
+    showAuthError("signupError", msgs[err.code] || "Sign up failed. Please try again.");
+    btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-user-plus"></i> Create Account';
+  }
+};
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    try {
+      const profileSnap = await getDoc(doc(db, "users", user.uid));
+      if (profileSnap.exists()) {
+        const p = profileSnap.data();
+        userRole = p.role || "student"; userName = p.name || user.email.split("@")[0];
+        userBirthday = p.birthday || ""; userEmail = user.email; currentUid = user.uid;
+        initDashboard();
+      } else { await signOut(auth); showLoading(false); }
+    } catch(e) { console.error("Profile load error:", e); showLoading(false); }
+  } else { showLoading(false); }
+});
+
+function showLoading(show) {
+  document.getElementById("loadingScreen").style.display = show ? "flex" : "none";
+  if (!show) {
+    const user = auth.currentUser;
+    document.getElementById("authPage").style.display  = user ? "none" : "flex";
+    document.getElementById("dashboard").style.display = user ? "block" : "none";
+  }
+}
+
+function initDashboard() {
+  document.getElementById("loadingScreen").style.display = "none";
+  document.getElementById("authPage").style.display      = "none";
+  document.getElementById("dashboard").style.display     = "block";
+  const initial = userName.charAt(0).toUpperCase();
+  const roleLabel = userRole.charAt(0).toUpperCase() + userRole.slice(1);
+  document.getElementById("sidebarAvatar").textContent      = initial;
+  document.getElementById("sidebarName").textContent        = userName;
+  document.getElementById("sidebarEmail").textContent       = userEmail;
+  document.getElementById("dashWelcome").textContent        = `Welcome back, ${userName.split(" ")[0]}!`;
+  document.getElementById("createPostNav").style.display    = userRole === "admin" ? "flex" : "none";
+  document.getElementById("profileAvatar").textContent      = initial;
+  document.getElementById("profileNameDisplay").textContent = userName;
+  document.getElementById("profileRoleDisplay").textContent = roleLabel;
+  document.getElementById("pName").textContent              = userName;
+  document.getElementById("pEmail").textContent             = userEmail;
+  document.getElementById("pRole").textContent              = roleLabel;
+  document.getElementById("pBirthday").textContent          = userBirthday ? formatBirthday(userBirthday) : "Not set";
+  document.getElementById("pUid").textContent               = currentUid;
+  document.getElementById("postedHint").textContent         = `Posted on ${new Date().toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}`;
+  enforceDateMin();
+  if (unsubscribeAnn) unsubscribeAnn();
+  const q = query(annCol, orderBy("createdAt","desc"));
+  unsubscribeAnn = onSnapshot(q, snapshot => {
+    announcements = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderAll();
+  }, error => { console.error("Firestore error:", error); showToast("⚠️ Database error."); });
+  setTimeout(checkAllBirthdays, 1200);
+}
+
+function formatBirthday(iso) {
+  if (!iso) return "Not set";
+  const [y, m, d] = iso.split("-");
+  return `${MONTHS[parseInt(m,10)-1]} ${parseInt(d,10)}, ${y}`;
+}
+function isBirthdayToday(isoDate) {
+  if (!isoDate) return false;
+  const today = new Date(); const [, m, d] = isoDate.split("-");
+  return parseInt(m,10) === today.getMonth()+1 && parseInt(d,10) === today.getDate();
+}
+function showBirthdayModal(name) { document.getElementById("bdModalName").textContent = name; document.getElementById("birthdayModal").classList.add("open"); document.body.style.overflow = "hidden"; }
+window.closeBirthdayModal = function() { document.getElementById("birthdayModal").classList.remove("open"); document.body.style.overflow = ""; };
+
+async function checkAllBirthdays() {
+  try {
+    const usersSnap = await getDocs(collection(db, "users"));
+    const todayBirthdays = [];
+    usersSnap.forEach(d => { const p = d.data(); if (p.birthday && isBirthdayToday(p.birthday)) todayBirthdays.push(p.name || p.email.split("@")[0]); });
+    if (todayBirthdays.length > 0) {
+      const isCurrentUserBday = isBirthdayToday(userBirthday);
+      const names = todayBirthdays.join(", ");
+      document.getElementById("bdBannerNames").textContent = isCurrentUserBday ? `It's your birthday today! 🎈 Celebrating: ${names}` : `Let's celebrate ${names} — send them some love! 💕`;
+      document.getElementById("birthdayBanner").style.display = "block";
+      if (isCurrentUserBday) setTimeout(() => showBirthdayModal(userName.split(" ")[0]), 800);
+    }
+  } catch(e) { console.error("Birthday check error:", e); if (isBirthdayToday(userBirthday)) setTimeout(() => showBirthdayModal(userName.split(" ")[0]), 800); }
+}
+
+window.logout = async function() {
+  if (unsubscribeAnn) { unsubscribeAnn(); unsubscribeAnn = null; }
+  await signOut(auth);
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("authPage").style.display  = "flex";
+  document.getElementById("siEmail").value = ""; document.getElementById("siPassword").value = "";
+};
+
+window.openFeaturesModal  = function() { document.getElementById("featuresModal").classList.add("open"); document.body.style.overflow = "hidden"; };
+window.closeFeaturesModal = function() { document.getElementById("featuresModal").classList.remove("open"); document.body.style.overflow = ""; };
+window.handleModalOverlayClick = function(e) { if (e.target === document.getElementById("featuresModal")) closeFeaturesModal(); };
+
+window.openLightbox = function(src, caption) {
+  document.getElementById("lightboxImg").src = src;
+  document.getElementById("lightboxCaption").textContent = caption || "";
+  document.getElementById("lightboxOverlay").classList.add("open");
+  document.body.style.overflow = "hidden";
+};
+window.closeLightbox = function(e) {
+  if (e && e.target !== document.getElementById("lightboxOverlay")) return;
+  document.getElementById("lightboxOverlay").classList.remove("open");
+  document.body.style.overflow = "";
+  setTimeout(() => { document.getElementById("lightboxImg").src = ""; }, 350);
+};
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") { document.getElementById("lightboxOverlay").classList.remove("open"); document.getElementById("featuresModal").classList.remove("open"); document.body.style.overflow = ""; }
+});
+
+// ===== HELPERS =====
+function getTodayISO() { const n = new Date(); return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,"0")}-${String(n.getDate()).padStart(2,"0")}`; }
+function enforceDateMin() { const el = document.getElementById("dateInput"); if (el) el.min = getTodayISO(); }
+function catIcon(cat) { return { Academic:"fa-solid fa-book", Event:"fa-solid fa-calendar-star", OutsideCampus:"fa-solid fa-map-location-dot", General:"fa-solid fa-info-circle" }[cat] || "fa-solid fa-info-circle"; }
+function catLabel(cat) { return cat === "OutsideCampus" ? "Outside Campus" : cat; }
+function todayGB() { return new Date().toLocaleDateString("en-GB"); }
+function parseGB(str) { const p = str.split("/"); return p.length===3 ? new Date(`${p[2]}-${p[1]}-${p[0]}`) : new Date(str); }
+
+// =====================================================================
+// FIX: "Posted on" now shows WHEN the announcement was CREATED,
+//      not the event date. Uses a.createdAt (Firestore Timestamp).
+//      - Firestore Timestamp → .toDate()
+//      - JS Date / ISO string → new Date()
+//      - null/undefined      → "—"
+// =====================================================================
+function fmtPosted(createdAt) {
+  if (!createdAt) return "—";
+  let d;
+  if (typeof createdAt.toDate === "function") {
+    d = createdAt.toDate();          // Firestore Timestamp
+  } else {
+    d = new Date(createdAt);         // plain string or number
+  }
+  if (isNaN(d)) return "—";
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
+
+function fmtTime(t) {
+  if (!t) return "";
+  const [h, m] = t.split(":").map(Number);
+  return `${h%12||12}:${String(m).padStart(2,"0")} ${h>=12?"PM":"AM"}`;
+}
+window.showToast = function(msg) { const t = document.getElementById("toast"); t.textContent = msg; t.classList.add("show"); setTimeout(() => t.classList.remove("show"), 2600); };
+
+window.openSidebar = function() { document.getElementById("sidebar").classList.add("open"); document.getElementById("mobOverlay").classList.add("show"); document.getElementById("mobMenuBtn").classList.add("is-open"); document.body.style.overflow = "hidden"; };
+window.closeSidebar = function() { document.getElementById("sidebar").classList.remove("open"); document.getElementById("mobOverlay").classList.remove("show"); document.getElementById("mobMenuBtn").classList.remove("is-open"); document.body.style.overflow = ""; };
+window.showPage = function(pageId, btn) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+  document.getElementById(pageId).classList.add("active");
+  if (btn) btn.classList.add("active");
+  closeSidebar(); renderAll();
+  if (pageId !== "announcementsPage" && pageId !== "dashboardPage") {
+    document.getElementById("topSearch").value = "";
+    document.getElementById("topSearchClear").style.display = "none";
+    document.getElementById("dashSearch").value = "";
+    document.getElementById("annSearch").value  = "";
+  }
+};
+
+window.togglePinInput = function() { const cb = document.getElementById("pinInput"); cb.checked = !cb.checked; syncPinToggleRow(); };
+window.syncPinToggleRow = function() { document.getElementById("pinToggleRow").classList.toggle("active", document.getElementById("pinInput").checked); };
+
+window.handleImageUpload = function(event) {
+  const file = event.target.files[0]; if (!file) return;
+  if (!file.type.startsWith("image/")) { showToast("⚠️ Please select an image file"); return; }
+  if (file.size > 5*1024*1024) { showToast("⚠️ Image must be under 5 MB"); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    uploadedImageData = e.target.result;
+    document.getElementById("imagePreviewImg").src           = uploadedImageData;
+    document.getElementById("imagePreviewName").textContent  = file.name;
+    document.getElementById("imagePreviewBox").style.display = "block";
+    showToast("✅ Image attached!");
+  };
+  reader.readAsDataURL(file);
+};
+window.clearImage = function() {
+  uploadedImageData = null;
+  document.getElementById("imageUploadInput").value           = "";
+  document.getElementById("imagePreviewImg").src              = "";
+  document.getElementById("imagePreviewName").textContent     = "";
+  document.getElementById("imagePreviewBox").style.display    = "none";
+};
+
+window.addAnnouncement = async function() {
+  const title    = document.getElementById("titleInput").value.trim();
+  const desc     = document.getElementById("descInput").value.trim();
+  const category = document.getElementById("categoryInput").value;
+  const dateVal  = document.getElementById("dateInput").value;
+  const timeVal  = document.getElementById("timeInput").value;
+  const venue    = document.getElementById("venueInput").value.trim();
+  const pic      = document.getElementById("picInput").value.trim();
+  const pinned   = document.getElementById("pinInput").checked;
+  if (!title)   { showToast("Please enter a title"); return; }
+  if (!dateVal) { showToast("Please select a date"); return; }
+  const selectedDate = new Date(dateVal); const todayMidnight = new Date(); todayMidnight.setHours(0,0,0,0);
+  if (selectedDate < todayMidnight) { showToast("❌ Cannot set announcements in the past!"); enforceDateMin(); return; }
+  const formattedDate = new Date(dateVal).toLocaleDateString("en-GB");
+  const postBtn = document.getElementById("postBtn"); postBtn.disabled = true;
+  try {
+    const data = { title, desc, category, date: formattedDate, time: timeVal||"", venue: venue||"", pic: pic||"", image: uploadedImageData||null, pinned };
+    if (editingId !== null) {
+      const docRef = doc(db, "announcements", editingId);
+      const existing = await getDoc(docRef);
+      data.image     = uploadedImageData || (existing.exists() ? existing.data().image : null);
+      data.updatedAt = serverTimestamp();
+      // NOTE: do NOT include createdAt here — preserve the original creation timestamp
+      await updateDoc(docRef, data);
+      editingId = null;
+      document.getElementById("postBtnText").textContent     = "Post Announcement";
+      document.getElementById("cancelEditBtn").style.display = "none";
+      document.getElementById("createPageTitle").textContent = "Create Announcement";
+      showToast("✅ Announcement updated!");
+    } else {
+      data.createdAt = serverTimestamp();  // ← set creation time only on NEW posts
+      await addDoc(annCol, data);
+      showToast(pinned ? "📌 Announcement pinned & posted!" : "✅ Announcement posted!");
+    }
+    ["titleInput","descInput","dateInput","timeInput","venueInput","picInput"].forEach(id => { document.getElementById(id).value = ""; });
+    document.getElementById("pinInput").checked = false; syncPinToggleRow(); clearImage(); enforceDateMin();
+  } catch(err) { console.error("Error saving:", err); showToast("❌ Error saving. Try again."); }
+  finally { postBtn.disabled = false; }
+};
+
+window.editAnnouncement = function(id) {
+  const a = announcements.find(x => x.id === id); if (!a) return;
+  document.getElementById("titleInput").value    = a.title;
+  document.getElementById("descInput").value     = a.desc;
+  document.getElementById("categoryInput").value = a.category;
+  document.getElementById("timeInput").value     = a.time  || "";
+  document.getElementById("venueInput").value    = a.venue || "";
+  document.getElementById("picInput").value      = a.pic   || "";
+  document.getElementById("pinInput").checked    = a.pinned || false;
+  syncPinToggleRow();
+  const p = a.date.split("/");
+  document.getElementById("dateInput").value = `${p[2]}-${p[1]}-${p[0]}`;
+  enforceDateMin();
+  if (a.image) { uploadedImageData = a.image; document.getElementById("imagePreviewImg").src = a.image; document.getElementById("imagePreviewName").textContent = "Existing image"; document.getElementById("imagePreviewBox").style.display = "block"; } else { clearImage(); }
+  editingId = id;
+  document.getElementById("postBtnText").textContent     = "Update Announcement";
+  document.getElementById("cancelEditBtn").style.display = "block";
+  document.getElementById("createPageTitle").textContent = "Edit Announcement";
+  showPage("createPage", document.querySelector('[onclick*="createPage"]'));
+  document.querySelector(".create-form-panel").scrollIntoView({ behavior: "smooth" });
+};
+
+window.cancelEdit = function() {
+  editingId = null;
+  ["titleInput","descInput","dateInput","timeInput","venueInput","picInput"].forEach(id => { document.getElementById(id).value = ""; });
+  document.getElementById("pinInput").checked = false; syncPinToggleRow(); clearImage(); enforceDateMin();
+  document.getElementById("postBtnText").textContent     = "Post Announcement";
+  document.getElementById("cancelEditBtn").style.display = "none";
+  document.getElementById("createPageTitle").textContent = "Create Announcement";
+};
+
+window.deleteAnnouncement = async function(id) {
+  if (!confirm("Delete this announcement?")) return;
+  try { await deleteDoc(doc(db, "announcements", id)); if (selectedManageId === id) selectedManageId = null; showToast("🗑️ Deleted!"); }
+  catch(err) { console.error("Error deleting:", err); showToast("❌ Error deleting."); }
+};
+
+window.togglePin = async function(id) {
+  const a = announcements.find(x => x.id === id); if (!a) return;
+  try { await updateDoc(doc(db, "announcements", id), { pinned: !a.pinned }); showToast(!a.pinned ? "📌 Announcement pinned!" : "📌 Announcement unpinned."); }
+  catch(err) { console.error("Pin error:", err); showToast("❌ Error updating pin."); }
+};
+
+window.setFilter = function(scope, val, btn) {
+  filters[scope] = val;
+  const tabIds = { dash:"dashFilterTabs", ann:"annFilterTabs", manage:"manageFilterTabs" };
+  document.querySelectorAll(`#${tabIds[scope]} .filter-tab`).forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  if (scope === "dash") renderDashList(); else if (scope === "ann") renderAnnList(); else { managePage = 1; renderManageGrid(); }
+};
+window.setManageSideFilter = function(val, btn) {
+  manageSideFilter = val;
+  document.querySelectorAll(".manage-filter-row .manage-filter").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active"); managePage = 1; renderManageGrid();
+};
+
+function getFiltered(filter, sortVal, searchVal) {
+  let list = [...announcements];
+  if (filter !== "All") list = list.filter(a => a.category === filter);
+  if (searchVal && searchVal.trim()) {
+    const q = searchVal.trim().toLowerCase();
+    list = list.filter(a => (a.title||"").toLowerCase().includes(q) || (a.desc||"").toLowerCase().includes(q) || (a.venue||"").toLowerCase().includes(q) || (a.pic||"").toLowerCase().includes(q) || catLabel(a.category).toLowerCase().includes(q));
+  }
+  if (sortVal === "oldest") list.sort((a,b) => parseGB(a.date)-parseGB(b.date));
+  else if (sortVal === "az") list.sort((a,b) => a.title.localeCompare(b.title));
+  else list.sort((a,b) => parseGB(b.date)-parseGB(a.date));
+  list.sort((a,b) => (b.pinned?1:0)-(a.pinned?1:0));
+  return list;
+}
+
+function buildExtraChips(a) {
+  const chips = [];
+  if (a.time)  chips.push(`<span class="ann-extra-chip"><i class="fa-solid fa-clock"></i>${fmtTime(a.time)}</span>`);
+  if (a.venue) chips.push(`<span class="ann-extra-chip"><i class="fa-solid fa-location-dot"></i>${a.venue}</span>`);
+  if (a.pic)   chips.push(`<span class="ann-extra-chip"><i class="fa-solid fa-user-tie"></i>${a.pic}</span>`);
+  return chips.length ? `<div class="ann-extra">${chips.join("")}</div>` : "";
+}
+
+function buildAnnItem(a, showCatBadge) {
+  const isToday = a.date === todayGB(); const isPinned = a.pinned || false;
+  const pinBadge  = isPinned ? `<div class="pin-badge"><i class="fa-solid fa-thumbtack"></i> Pinned</div>` : "";
+  const adminBtns = userRole === "admin"
+    ? `<div class="ann-actions">
+        <button class="btn-pin ${isPinned?'pinned':''}" onclick="togglePin('${a.id}')"><i class="fa-solid fa-thumbtack"></i>${isPinned?'Unpin':'Pin'}</button>
+        <button class="btn-edit" onclick="editAnnouncement('${a.id}')">Edit</button>
+        <button class="btn-delete" onclick="deleteAnnouncement('${a.id}')">Delete</button>
+      </div>` : "";
+  const catBadge = showCatBadge ? `<span class="ann-cat-badge ${a.category}">${catLabel(a.category)}</span>` : "";
+  const imgHtml  = a.image ? `<div class="ann-img-wrap" onclick="openLightbox('${a.image}','${a.title.replace(/'/g,"\\'")}')"><img src="${a.image}" alt="${a.title}"><div class="ann-img-zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Click to zoom</div></div>` : "";
+
+  // ✅ FIX: use a.createdAt (when it was posted), NOT a.date (the event date)
+  const postedLabel = `Posted on ${fmtPosted(a.createdAt)}`;
+
+  const div = document.createElement("div");
+  div.className = "ann-item" + (isPinned ? " pinned-item" : "");
+  div.innerHTML = `
+    ${pinBadge}
+    <div class="ann-cat-icon ${a.category}"><i class="${catIcon(a.category)}"></i></div>
+    <div class="ann-body">
+      ${imgHtml}
+      <div class="ann-title">${a.title}${isToday?'<span class="today-badge">Today</span>':''}</div>
+      <div class="ann-desc">${a.desc}</div>
+      ${buildExtraChips(a)}
+      <div class="ann-meta"><span class="ann-date"><i class="fa-regular fa-clock"></i> ${a.date}</span>${catBadge}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">
+      <span class="ann-posted">${postedLabel}</span>${adminBtns}
+    </div>`;
+  return div;
+}
+
+function renderAll() { updateStats(); renderDashList(); renderMiniCal(); renderUpcoming(); renderAnnList(); renderManageGrid(); renderFullCal(); }
+
+function updateStats() {
+  const now = new Date(), today = todayGB();
+  document.getElementById("statTotal").textContent    = announcements.length;
+  document.getElementById("statToday").textContent    = announcements.filter(a => a.date === today).length;
+  document.getElementById("statUpcoming").textContent = announcements.filter(a => parseGB(a.date) > now).length;
+  document.getElementById("statPinned").textContent   = announcements.filter(a => a.pinned).length;
+}
+
+function renderListWithPinnedSection(container, list, showCatBadge) {
+  container.innerHTML = "";
+  if (!list.length) { container.innerHTML = '<div class="empty-state"><i class="fa-solid fa-inbox"></i><p>No announcements found</p></div>'; return; }
+  const pinned = list.filter(a => a.pinned); const unpinned = list.filter(a => !a.pinned);
+  if (pinned.length > 0) {
+    const section = document.createElement("div"); section.className = "pinned-section";
+    section.innerHTML = `<div class="pinned-section-header"><i class="fa-solid fa-thumbtack"></i><span>📌 Pinned Announcements</span></div>`;
+    const innerList = document.createElement("div"); innerList.className = "ann-list";
+    pinned.forEach(a => innerList.appendChild(buildAnnItem(a, showCatBadge)));
+    section.appendChild(innerList); container.appendChild(section);
+  }
+  if (unpinned.length > 0) {
+    const innerList = document.createElement("div"); innerList.className = "ann-list";
+    unpinned.forEach(a => innerList.appendChild(buildAnnItem(a, showCatBadge)));
+    container.appendChild(innerList);
+  }
+}
+
+function renderDashList() { renderListWithPinnedSection(document.getElementById("dashAnnList"), getFiltered(filters.dash, document.getElementById("dashSortSelect").value, document.getElementById("dashSearch").value), false); }
+function renderAnnList()  { renderListWithPinnedSection(document.getElementById("annListContainer"), getFiltered(filters.ann, document.getElementById("annSortSelect").value, document.getElementById("annSearch").value), true); }
+
+function renderManageGrid() {
+  const search = document.getElementById("manageSideSearch").value.toLowerCase();
+  const dateF  = document.getElementById("manageDateFilter").value;
+  const sort   = document.getElementById("manageSortSelect").value;
+  const cf     = filters.manage !== "All" ? filters.manage : manageSideFilter;
+  let list = [...announcements];
+  if (cf !== "All") list = list.filter(a => a.category === cf);
+  if (search) list = list.filter(a => a.title.toLowerCase().includes(search) || a.desc.toLowerCase().includes(search));
+  if (dateF)  { const df = new Date(dateF).toLocaleDateString("en-GB"); list = list.filter(a => a.date === df); }
+  list.sort(sort === "oldest" ? (a,b) => parseGB(a.date)-parseGB(b.date) : (a,b) => parseGB(b.date)-parseGB(a.date));
+  list.sort((a,b) => (b.pinned?1:0)-(a.pinned?1:0));
+  const totalPages = Math.max(1, Math.ceil(list.length/PER_PAGE));
+  if (managePage > totalPages) managePage = totalPages;
+  const paged = list.slice((managePage-1)*PER_PAGE, managePage*PER_PAGE);
+  document.getElementById("pageInfo").textContent = `Page ${managePage} of ${totalPages}`;
+  const grid = document.getElementById("manageAnnGrid"); grid.innerHTML = "";
+  if (!paged.length) { grid.innerHTML = '<div class="empty-state" style="grid-column:span 2"><i class="fa-solid fa-inbox"></i><p>No announcements</p></div>'; return; }
+  paged.forEach(a => {
+    const card = document.createElement("div");
+    card.className = "manage-ann-card" + (selectedManageId===a.id?" selected":"") + (a.pinned?" is-pinned":"");
+    card.onclick = () => { selectedManageId = a.id; renderManageGrid(); };
+    const imgThumb   = a.image ? `<div class="manage-thumb-wrap" onclick="event.stopPropagation();openLightbox('${a.image}','${a.title.replace(/'/g,"\\'")}')"><img src="${a.image}" alt="${a.title}"><div class="ann-img-zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div></div>` : "";
+    const chipParts  = [];
+    if (a.time)  chipParts.push(`<div class="manage-chip"><i class="fa-solid fa-clock"></i>${fmtTime(a.time)}</div>`);
+    if (a.venue) chipParts.push(`<div class="manage-chip"><i class="fa-solid fa-location-dot"></i>${a.venue}</div>`);
+    if (a.pic)   chipParts.push(`<div class="manage-chip"><i class="fa-solid fa-user-tie"></i>${a.pic}</div>`);
+    const pinIndicator = a.pinned ? `<div class="manage-pin-indicator" title="Pinned"><i class="fa-solid fa-thumbtack"></i></div>` : "";
+
+    // ✅ FIX: use a.createdAt (when it was posted), NOT a.date (the event date)
+    const postedLabel = `Posted on ${fmtPosted(a.createdAt)}`;
+
+    card.innerHTML = `
+      ${pinIndicator}${imgThumb}
+      <div class="manage-card-top"><div class="manage-card-icon ${a.category}"><i class="${catIcon(a.category)}"></i></div><div class="manage-card-title">${a.title}</div></div>
+      <div class="manage-card-desc">${a.desc}</div>
+      ${chipParts.length?`<div class="manage-card-chips">${chipParts.join("")}</div>`:""}
+      <div class="manage-posted">${postedLabel}</div>
+      <div class="manage-card-meta"><span class="manage-card-date"><i class="fa-regular fa-clock"></i> ${a.date}</span><span class="manage-card-cat ${a.category}">${catLabel(a.category)}</span></div>
+      <div class="manage-card-actions">
+        <button class="btn-sm-edit" onclick="event.stopPropagation();editAnnouncement('${a.id}')">Edit</button>
+        <button class="btn-sm-pin ${a.pinned?'active':''}" onclick="event.stopPropagation();togglePin('${a.id}')"><i class="fa-solid fa-thumbtack"></i>${a.pinned?'Unpin':'Pin'}</button>
+        <button class="btn-sm-delete" onclick="event.stopPropagation();deleteAnnouncement('${a.id}')">Delete</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+window.changeMPage    = function(dir) { managePage += dir; if (managePage < 1) managePage = 1; renderManageGrid(); };
+window.editSelected   = function()   { if (!selectedManageId) { showToast("Select an announcement first"); return; } editAnnouncement(selectedManageId); };
+window.deleteSelected = function()   { if (!selectedManageId) { showToast("Select an announcement first"); return; } deleteAnnouncement(selectedManageId); };
+
+function renderMiniCal() {
+  const y = calViewDate.getFullYear(), m = calViewDate.getMonth(), today = new Date();
+  document.getElementById("miniCalMonth").textContent = `${MONTHS[m]} ${y}`;
+  const grid = document.getElementById("miniCalGrid"); grid.innerHTML = "";
+  DAYS_SHORT.forEach(d => { const el = document.createElement("div"); el.className = "cal-day-label"; el.textContent = d; grid.appendChild(el); });
+  const firstDay = new Date(y,m,1).getDay(), daysInMonth = new Date(y,m+1,0).getDate(), daysInPrev = new Date(y,m,0).getDate();
+  for (let i=firstDay-1; i>=0; i--) { const el = document.createElement("div"); el.className = "cal-day other-month"; el.textContent = daysInPrev-i; grid.appendChild(el); }
+  for (let d=1; d<=daysInMonth; d++) {
+    const el = document.createElement("div"); el.className = "cal-day"; el.textContent = d;
+    const dateStr = new Date(y,m,d).toLocaleDateString("en-GB");
+    const isToday = d===today.getDate() && m===today.getMonth() && y===today.getFullYear();
+    if (isToday) el.classList.add("today");
+    if (announcements.some(a => a.date===dateStr) && !isToday) el.classList.add("has-event");
+    el.onclick = () => { document.querySelectorAll("#miniCalGrid .cal-day").forEach(x => x.classList.remove("selected")); el.classList.add("selected"); };
+    grid.appendChild(el);
+  }
+}
+window.changeMonth = function(dir) { calViewDate.setMonth(calViewDate.getMonth()+dir); renderMiniCal(); };
+
+function renderUpcoming() {
+  const now = new Date();
+  const upcoming = announcements.filter(a => parseGB(a.date)>=now).sort((a,b)=>parseGB(a.date)-parseGB(b.date)).slice(0,5);
+  const c = document.getElementById("upcomingList"); c.innerHTML = "";
+  if (!upcoming.length) { c.innerHTML = '<div style="color:var(--text-light);font-size:13px;">No upcoming events</div>'; return; }
+  upcoming.forEach(a => {
+    const d = parseGB(a.date); const item = document.createElement("div"); item.className = "upcoming-item";
+    const sub = [a.time ? fmtTime(a.time) : "", a.venue||""].filter(Boolean).join(" · ");
+    item.innerHTML = `<div class="upcoming-num">${d.getDate()}</div><div class="upcoming-icon"><i class="${catIcon(a.category)}"></i></div><div class="upcoming-info"><div class="upcoming-name">${a.title}</div><div class="upcoming-sub">${sub||(a.desc.slice(0,35)+(a.desc.length>35?"...":""))}</div></div>`;
+    c.appendChild(item);
+  });
+}
+
+function renderFullCal() {
+  const y = fullCalViewDate.getFullYear(), m = fullCalViewDate.getMonth(), today = new Date();
+  document.getElementById("fullCalMonth").textContent = `${MONTHS[m]} ${y}`;
+  const grid = document.getElementById("fullCalGrid"); grid.innerHTML = "";
+  DAYS_FULL.forEach(d => { const el = document.createElement("div"); el.className = "cal-full-day-label"; el.textContent = d; grid.appendChild(el); });
+  const firstDay = new Date(y,m,1).getDay(), daysInMonth = new Date(y,m+1,0).getDate(), daysInPrev = new Date(y,m,0).getDate();
+  for (let i=firstDay-1; i>=0; i--) { const cell = document.createElement("div"); cell.className = "cal-full-cell other-month"; cell.innerHTML = `<div class="cell-num">${daysInPrev-i}</div>`; grid.appendChild(cell); }
+  for (let d=1; d<=daysInMonth; d++) {
+    const cell = document.createElement("div"); cell.className = "cal-full-cell";
+    const dateStr = new Date(y,m,d).toLocaleDateString("en-GB");
+    if (d===today.getDate() && m===today.getMonth() && y===today.getFullYear()) cell.classList.add("today");
+    const dayEvents = announcements.filter(a => a.date===dateStr);
+    let evHtml = dayEvents.slice(0,2).map(e => `<div class="cell-event ${e.category}">${e.pinned?'📌 ':''}${e.title}</div>`).join("");
+    if (dayEvents.length > 2) evHtml += `<div class="cell-event General">+${dayEvents.length-2} more</div>`;
+    cell.innerHTML = `<div class="cell-num">${d}</div>${evHtml}`;
+    grid.appendChild(cell);
+  }
+}
+window.changeFullMonth = function(dir) { fullCalViewDate.setMonth(fullCalViewDate.getMonth()+dir); renderFullCal(); };
+
+window.syncSearchFromPanel = function(panel) {
+  const q = panel === "dash" ? document.getElementById("dashSearch").value : document.getElementById("annSearch").value;
+  document.getElementById("topSearch").value = q;
+  document.getElementById("topSearchClear").style.display = q.length > 0 ? "block" : "none";
+  if (panel === "dash") renderDashList(); else renderAnnList();
+};
+
+window.handleTopSearch = function() {
+  const q = document.getElementById("topSearch").value;
+  document.getElementById("topSearchClear").style.display = q.length > 0 ? "block" : "none";
+  document.getElementById("dashSearch").value = q; document.getElementById("annSearch").value = q;
+  renderDashList(); renderAnnList();
+};
+window.submitTopSearch = function() {
+  const q = document.getElementById("topSearch").value.trim(); if (!q) return;
+  document.getElementById("annSearch").value = q; document.getElementById("dashSearch").value = q;
+  showPage("announcementsPage", document.querySelector('[onclick*="announcementsPage"]')); renderAnnList();
+};
+window.clearTopSearch = function() {
+  document.getElementById("topSearch").value = ""; document.getElementById("topSearchClear").style.display = "none";
+  document.getElementById("dashSearch").value = ""; document.getElementById("annSearch").value = "";
+  renderDashList(); renderAnnList();
+};
+</script>
+</body>
+</html>
