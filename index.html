@@ -185,8 +185,25 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg-light); color: va
 .search-bar:focus-within { border-color: var(--primary-light); background: white; }
 .search-bar i { color: var(--text-light); font-size: 14px; }
 .search-bar input { border: none; background: none; outline: none; font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--text-dark); width: 100%; }
-.help-btn { margin-left: auto; width: 38px; height: 38px; border-radius: 10px; background: #ede9fe; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 16px; transition: all 0.2s; flex-shrink: 0; }
-.help-btn:hover { background: var(--primary); color: white; transform: scale(1.05); }
+
+/* ===== PROFILE BUTTON IN TOPBAR (swapped from sidebar) ===== */
+.profile-topbar-btn {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; border-radius: 10px; background: #ede9fe; border: none;
+  cursor: pointer; color: var(--primary); font-size: 14px; font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.2s; flex-shrink: 0;
+}
+.profile-topbar-btn:hover { background: var(--primary); color: white; transform: scale(1.03); }
+.profile-topbar-btn i { font-size: 16px; }
+.profile-topbar-btn span { font-size: 13px; }
+
+/* ===== HELP NAV ITEM IN SIDEBAR (swapped from topbar) ===== */
+.nav-item.help-nav {
+  color: rgba(255,255,255,0.7);
+}
+.nav-item.help-nav:hover { background: rgba(255,255,255,0.1); color: white; }
 
 /* ===== PAGE ===== */
 .page-content { padding: 28px; flex: 1; }
@@ -590,6 +607,8 @@ textarea.form-input { resize: vertical; min-height: 90px; }
   .feature-cards-grid { grid-template-columns: 1fr; }
   .auth-form-section { padding: 30px 24px; }
   .profile-fields { grid-template-columns: 1fr; }
+  .profile-topbar-btn span { display: none; }
+  .profile-topbar-btn { padding: 8px 10px; }
 
   /* ===== MOBILE ANNOUNCEMENT CARD FIX ===== */
   .ann-item { flex-direction: column !important; gap: 10px; padding: 14px; }
@@ -643,7 +662,7 @@ textarea.form-input { resize: vertical; min-height: 90px; }
       <div class="feature-card"><div class="feature-card-icon purple"><i class="fa-solid fa-house"></i></div><div><div class="feature-card-name">Dashboard</div><div class="feature-card-desc">Your home screen showing stats, latest announcements, a mini calendar, and upcoming events.</div></div></div>
       <div class="feature-card"><div class="feature-card-icon blue"><i class="fa-solid fa-bullhorn"></i></div><div><div class="feature-card-name">Announcements</div><div class="feature-card-desc">Browse all school announcements. Filter by category and sort by date or name.</div></div></div>
       <div class="feature-card"><div class="feature-card-icon amber"><i class="fa-solid fa-calendar-days"></i></div><div><div class="feature-card-name">Calendar</div><div class="feature-card-desc">Full monthly calendar view showing all events mapped to their dates.</div></div></div>
-      <div class="feature-card"><div class="feature-card-icon green"><i class="fa-solid fa-magnifying-glass"></i></div><div><div class="feature-card-name">Search & Filter</div><div class="feature-card-desc">Search announcements by keyword and use category filters to narrow results.</div></div></div>
+      <div class="feature-card"><div class="feature-card-icon green"><i class="fa-solid fa-magnifying-glass"></i></div><div><div class="feature-card-name">Search &amp; Filter</div><div class="feature-card-desc">Search announcements by keyword and use category filters to narrow results.</div></div></div>
       <div class="feature-card"><div class="feature-card-icon red"><i class="fa-solid fa-bell"></i></div><div><div class="feature-card-name">Categories</div><div class="feature-card-desc"><strong>Academic</strong>, <strong>Event</strong>, and <strong>Outside Campus</strong> announcement types.</div></div></div>
       <div class="feature-card"><div class="feature-card-icon gray"><i class="fa-solid fa-circle-user"></i></div><div><div class="feature-card-name">Profile</div><div class="feature-card-desc">View your account info including name, email, role, and birthday.</div></div></div>
     </div>
@@ -659,7 +678,7 @@ textarea.form-input { resize: vertical; min-height: 90px; }
       <p><strong>Admin accounts</strong> have full access to create, edit, pin, and delete announcements. <strong>Student accounts</strong> can view and search all content but cannot post or modify it.</p>
     </div>
     <div class="modal-footer">
-      <div class="modal-footer-tip"><i class="fa-solid fa-lightbulb"></i> Tip: Click the <strong>?</strong> button anytime to reopen this guide.</div>
+      <div class="modal-footer-tip"><i class="fa-solid fa-lightbulb"></i> Tip: Click <strong>Guide</strong> in the sidebar anytime to reopen this.</div>
       <button class="got-it-btn" onclick="closeFeaturesModal()">Got it! 👍</button>
     </div>
   </div>
@@ -789,7 +808,8 @@ textarea.form-input { resize: vertical; min-height: 90px; }
         <button class="nav-item" onclick="showPage('announcementsPage',this)"><i class="fa-solid fa-bullhorn"></i><span>Announcements</span></button>
         <button class="nav-item" id="createPostNav" onclick="showPage('createPage',this)" style="display:none;"><i class="fa-solid fa-pen-to-square"></i><span>Create Post</span></button>
         <button class="nav-item" onclick="showPage('calendarPage',this)"><i class="fa-solid fa-calendar-days"></i><span>Calendar</span></button>
-        <button class="nav-item" onclick="showPage('profilePage',this)"><i class="fa-solid fa-circle-user"></i><span>Profile</span></button>
+        <!-- SWAPPED: Help/Guide button now lives in the sidebar (was topbar "?" button) -->
+        <button class="nav-item help-nav" onclick="openFeaturesModal()"><i class="fa-solid fa-circle-question"></i><span>Guide</span></button>
         <button class="nav-item" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
       </nav>
       <div class="sidebar-user">
@@ -807,7 +827,11 @@ textarea.form-input { resize: vertical; min-height: 90px; }
           <input type="text" id="topSearch" placeholder="Search announcements..." oninput="handleTopSearch()" onkeydown="if(event.key==='Enter')submitTopSearch()">
           <button id="topSearchClear" onclick="clearTopSearch()" style="display:none;background:none;border:none;cursor:pointer;color:var(--text-light);padding:2px 4px;font-size:13px;line-height:1;" title="Clear"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <button class="help-btn" onclick="openFeaturesModal()" title="Website Guide"><i class="fa-solid fa-question"></i></button>
+        <!-- SWAPPED: Profile button now lives in the topbar (was sidebar nav item) -->
+        <button class="profile-topbar-btn" onclick="showPage('profilePage', document.querySelector('[onclick*=\'profilePage\']'))" title="My Profile">
+          <i class="fa-solid fa-circle-user"></i>
+          <span id="topbarProfileName">Profile</span>
+        </button>
       </div>
 
       <div class="page-content">
@@ -1190,6 +1214,8 @@ function initDashboard() {
   document.getElementById("pBirthday").textContent          = userBirthday ? formatBirthday(userBirthday) : "Not set";
   document.getElementById("pUid").textContent               = currentUid;
   document.getElementById("postedHint").textContent         = `Posted on ${new Date().toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}`;
+  // Update topbar profile button label with first name
+  document.getElementById("topbarProfileName").textContent  = userName.split(" ")[0];
   enforceDateMin();
   if (unsubscribeAnn) unsubscribeAnn();
   const q = query(annCol, orderBy("createdAt","desc"));
@@ -1264,20 +1290,13 @@ function catLabel(cat) { return cat === "OutsideCampus" ? "Outside Campus" : cat
 function todayGB() { return new Date().toLocaleDateString("en-GB"); }
 function parseGB(str) { const p = str.split("/"); return p.length===3 ? new Date(`${p[2]}-${p[1]}-${p[0]}`) : new Date(str); }
 
-// =====================================================================
-// FIX: "Posted on" now shows WHEN the announcement was CREATED,
-//      not the event date. Uses a.createdAt (Firestore Timestamp).
-//      - Firestore Timestamp → .toDate()
-//      - JS Date / ISO string → new Date()
-//      - null/undefined      → "—"
-// =====================================================================
 function fmtPosted(createdAt) {
   if (!createdAt) return "—";
   let d;
   if (typeof createdAt.toDate === "function") {
-    d = createdAt.toDate();          // Firestore Timestamp
+    d = createdAt.toDate();
   } else {
-    d = new Date(createdAt);         // plain string or number
+    d = new Date(createdAt);
   }
   if (isNaN(d)) return "—";
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
@@ -1353,7 +1372,6 @@ window.addAnnouncement = async function() {
       const existing = await getDoc(docRef);
       data.image     = uploadedImageData || (existing.exists() ? existing.data().image : null);
       data.updatedAt = serverTimestamp();
-      // NOTE: do NOT include createdAt here — preserve the original creation timestamp
       await updateDoc(docRef, data);
       editingId = null;
       document.getElementById("postBtnText").textContent     = "Post Announcement";
@@ -1361,7 +1379,7 @@ window.addAnnouncement = async function() {
       document.getElementById("createPageTitle").textContent = "Create Announcement";
       showToast("✅ Announcement updated!");
     } else {
-      data.createdAt = serverTimestamp();  // ← set creation time only on NEW posts
+      data.createdAt = serverTimestamp();
       await addDoc(annCol, data);
       showToast(pinned ? "📌 Announcement pinned & posted!" : "✅ Announcement posted!");
     }
@@ -1460,10 +1478,7 @@ function buildAnnItem(a, showCatBadge) {
       </div>` : "";
   const catBadge = showCatBadge ? `<span class="ann-cat-badge ${a.category}">${catLabel(a.category)}</span>` : "";
   const imgHtml  = a.image ? `<div class="ann-img-wrap" onclick="openLightbox('${a.image}','${a.title.replace(/'/g,"\\'")}')"><img src="${a.image}" alt="${a.title}"><div class="ann-img-zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Click to zoom</div></div>` : "";
-
-  // ✅ FIX: use a.createdAt (when it was posted), NOT a.date (the event date)
   const postedLabel = `Posted on ${fmtPosted(a.createdAt)}`;
-
   const div = document.createElement("div");
   div.className = "ann-item" + (isPinned ? " pinned-item" : "");
   div.innerHTML = `
@@ -1540,10 +1555,7 @@ function renderManageGrid() {
     if (a.venue) chipParts.push(`<div class="manage-chip"><i class="fa-solid fa-location-dot"></i>${a.venue}</div>`);
     if (a.pic)   chipParts.push(`<div class="manage-chip"><i class="fa-solid fa-user-tie"></i>${a.pic}</div>`);
     const pinIndicator = a.pinned ? `<div class="manage-pin-indicator" title="Pinned"><i class="fa-solid fa-thumbtack"></i></div>` : "";
-
-    // ✅ FIX: use a.createdAt (when it was posted), NOT a.date (the event date)
     const postedLabel = `Posted on ${fmtPosted(a.createdAt)}`;
-
     card.innerHTML = `
       ${pinIndicator}${imgThumb}
       <div class="manage-card-top"><div class="manage-card-icon ${a.category}"><i class="${catIcon(a.category)}"></i></div><div class="manage-card-title">${a.title}</div></div>
