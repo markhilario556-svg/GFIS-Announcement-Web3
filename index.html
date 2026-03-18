@@ -157,7 +157,59 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg-light); color: va
   width: var(--sidebar-w); background: linear-gradient(180deg, #3b0e8c 0%, #5b21b6 50%, #7c3aed 100%);
   display: flex; flex-direction: column; position: fixed; top: 0; left: 0;
   height: 100vh; z-index: 100; box-shadow: 4px 0 20px rgba(0,0,0,0.2);
-  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+}
+/* Desktop: sidebar hidden state */
+.sidebar.desktop-closed {
+  left: calc(-1 * var(--sidebar-w));
+  box-shadow: none;
+}
+/* Desktop: main content expands when sidebar is hidden */
+.main-content.sidebar-hidden {
+  margin-left: 0 !important;
+  border-radius: 0 !important;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-radius 0.3s ease;
+}
+.main-content {
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-radius 0.3s ease;
+}
+/* Desktop toggle button - only shown on desktop */
+.desktop-toggle-btn {
+  display: none;
+}
+@media (min-width: 769px) {
+  .desktop-toggle-btn {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 200;
+    width: 38px;
+    height: 38px;
+    background: var(--primary);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    box-shadow: 0 4px 12px rgba(91,33,182,0.35);
+    transition: all 0.2s ease;
+    padding: 8px;
+  }
+  .desktop-toggle-btn:hover { background: var(--primary-dark); transform: scale(1.05); }
+  .desktop-toggle-btn span {
+    display: block; width: 18px; height: 2.5px; background: white;
+    border-radius: 3px; transition: all 0.3s ease; transform-origin: center;
+  }
+  .desktop-toggle-btn.is-open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+  .desktop-toggle-btn.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .desktop-toggle-btn.is-open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+  /* Shift toggle button right when sidebar is open */
+  .desktop-toggle-btn.sidebar-open {
+    left: calc(var(--sidebar-w) + 12px);
+  }
 }
 .sidebar-logo { display: flex; align-items: center; gap: 12px; padding: 28px 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
 .sidebar-logo .logo-icon { width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
@@ -567,6 +619,9 @@ textarea.form-input { resize: vertical; min-height: 90px; }
 .mob-menu-btn.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
 .mob-menu-btn.is-open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
 .mob-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); backdrop-filter: blur(2px); z-index: 99; opacity: 0; transition: opacity 0.3s ease; }
+/* Desktop sidebar overlay */
+.desktop-sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); backdrop-filter: blur(2px); z-index: 99; opacity: 0; transition: opacity 0.3s ease; }
+.desktop-sidebar-overlay.show { display: block; opacity: 1; }
 .mob-overlay.show { display: block; opacity: 1; }
 .mob-topbar-logo { display: none; align-items: center; gap: 8px; flex: 1; justify-content: center; }
 .mob-topbar-logo .tl-icon { width: 30px; height: 30px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
@@ -773,6 +828,14 @@ textarea.form-input { resize: vertical; min-height: 90px; }
     </div>
   </div>
 </div>
+
+<!-- DESKTOP SIDEBAR TOGGLE BUTTON (shown on desktop only) -->
+<button class="desktop-toggle-btn sidebar-open" id="desktopToggleBtn" onclick="toggleDesktopSidebar()">
+  <span></span><span></span><span></span>
+</button>
+
+<!-- DESKTOP SIDEBAR OVERLAY -->
+<div class="desktop-sidebar-overlay" id="desktopSidebarOverlay" onclick="closeDesktopSidebar()"></div>
 
 <!-- DASHBOARD -->
 <div id="dashboard">
@@ -1323,12 +1386,56 @@ window.showToast = function(msg) { const t = document.getElementById("toast"); t
 
 window.openSidebar = function() { document.getElementById("sidebar").classList.add("open"); document.getElementById("mobOverlay").classList.add("show"); document.getElementById("mobMenuBtn").classList.add("is-open"); document.body.style.overflow = "hidden"; };
 window.closeSidebar = function() { document.getElementById("sidebar").classList.remove("open"); document.getElementById("mobOverlay").classList.remove("show"); document.getElementById("mobMenuBtn").classList.remove("is-open"); document.body.style.overflow = ""; };
+
+// ===== DESKTOP SIDEBAR TOGGLE =====
+function isDesktop() { return window.innerWidth > 768; }
+
+window.toggleDesktopSidebar = function() {
+  if (!isDesktop()) return;
+  const sidebar   = document.getElementById("sidebar");
+  const main      = document.querySelector(".main-content");
+  const overlay   = document.getElementById("desktopSidebarOverlay");
+  const toggleBtn = document.getElementById("desktopToggleBtn");
+  const isOpen    = !sidebar.classList.contains("desktop-closed");
+  if (isOpen) {
+    // Close it
+    sidebar.classList.add("desktop-closed");
+    main.classList.add("sidebar-hidden");
+    overlay.classList.add("show");
+    toggleBtn.classList.remove("sidebar-open");
+    toggleBtn.classList.add("is-open");
+  } else {
+    // Open it
+    sidebar.classList.remove("desktop-closed");
+    main.classList.remove("sidebar-hidden");
+    overlay.classList.remove("show");
+    toggleBtn.classList.add("sidebar-open");
+    toggleBtn.classList.remove("is-open");
+  }
+};
+
+window.closeDesktopSidebar = function() {
+  if (!isDesktop()) return;
+  const sidebar   = document.getElementById("sidebar");
+  const main      = document.querySelector(".main-content");
+  const overlay   = document.getElementById("desktopSidebarOverlay");
+  const toggleBtn = document.getElementById("desktopToggleBtn");
+  sidebar.classList.add("desktop-closed");
+  main.classList.add("sidebar-hidden");
+  overlay.classList.remove("show");
+  toggleBtn.classList.remove("sidebar-open");
+  toggleBtn.classList.add("is-open");
+};
 window.showPage = function(pageId, btn) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
   document.getElementById(pageId).classList.add("active");
   if (btn) btn.classList.add("active");
-  closeSidebar(); renderAll();
+  // Close mobile sidebar
+  closeSidebar();
+  // ✅ NEW: Close desktop sidebar when a page is selected
+  if (isDesktop()) closeDesktopSidebar();
+  renderAll();
   if (pageId !== "announcementsPage" && pageId !== "dashboardPage") {
     document.getElementById("topSearch").value = "";
     document.getElementById("topSearchClear").style.display = "none";
@@ -1675,6 +1782,21 @@ window.clearTopSearch = function() {
   document.getElementById("dashSearch").value = ""; document.getElementById("annSearch").value = "";
   renderDashList(); renderAnnList();
 };
+// ===== HANDLE WINDOW RESIZE =====
+// On resize to mobile, clean up desktop sidebar state
+window.addEventListener("resize", () => {
+  const toggleBtn = document.getElementById("desktopToggleBtn");
+  const overlay   = document.getElementById("desktopSidebarOverlay");
+  const sidebar   = document.getElementById("sidebar");
+  const main      = document.querySelector(".main-content");
+  if (!isDesktop()) {
+    // Switched to mobile — remove desktop classes, hide overlay
+    sidebar.classList.remove("desktop-closed");
+    main.classList.remove("sidebar-hidden");
+    if (overlay) overlay.classList.remove("show");
+    if (toggleBtn) { toggleBtn.classList.add("sidebar-open"); toggleBtn.classList.remove("is-open"); }
+  }
+});
 </script>
 </body>
 </html>
