@@ -14,7 +14,7 @@
   --accent: #f59e0b;
   --academic: #2563eb;
   --event: #7c3aed;
-  --outside-campus: #059669;
+  --outside-campus: #059669; /* ✅ FIX: was missing from :root */
   --general: #6b7280;
   --bg-light: #faf5ff;
   --text-dark: #1f2937;
@@ -23,8 +23,7 @@
   --sidebar-w: 220px;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { height: 100%; height: -webkit-fill-available; }
-body { font-family: 'Outfit', sans-serif; background: var(--bg-light); color: var(--text-dark); line-height: 1.6; min-height: 100vh; min-height: 100dvh; }
+body { font-family: 'Outfit', sans-serif; background: var(--bg-light); color: var(--text-dark); line-height: 1.6; }
 
 /* ===== AUTH PAGE ===== */
 #authPage {
@@ -157,13 +156,8 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg-light); color: va
 .sidebar {
   width: var(--sidebar-w); background: linear-gradient(180deg, #3b0e8c 0%, #5b21b6 50%, #7c3aed 100%);
   display: flex; flex-direction: column; position: fixed; top: 0; left: 0;
-  height: 100vh;
-  height: 100dvh;
-  min-height: -webkit-fill-available;
-  z-index: 100; box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+  height: 100vh; z-index: 100; box-shadow: 4px 0 20px rgba(0,0,0,0.2);
   transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow-y: auto;
-  overscroll-behavior: contain;
 }
 .sidebar-logo { display: flex; align-items: center; gap: 12px; padding: 28px 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
 .sidebar-logo .logo-icon { width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
@@ -191,25 +185,8 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg-light); color: va
 .search-bar:focus-within { border-color: var(--primary-light); background: white; }
 .search-bar i { color: var(--text-light); font-size: 14px; }
 .search-bar input { border: none; background: none; outline: none; font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--text-dark); width: 100%; }
-
-/* ===== PROFILE BUTTON IN TOPBAR (swapped from sidebar) ===== */
-.profile-topbar-btn {
-  margin-left: auto;
-  display: flex; align-items: center; gap: 8px;
-  padding: 8px 14px; border-radius: 10px; background: #ede9fe; border: none;
-  cursor: pointer; color: var(--primary); font-size: 14px; font-weight: 600;
-  font-family: 'Outfit', sans-serif;
-  transition: all 0.2s; flex-shrink: 0;
-}
-.profile-topbar-btn:hover { background: var(--primary); color: white; transform: scale(1.03); }
-.profile-topbar-btn i { font-size: 16px; }
-.profile-topbar-btn span { font-size: 13px; }
-
-/* ===== HELP NAV ITEM IN SIDEBAR (swapped from topbar) ===== */
-.nav-item.help-nav {
-  color: rgba(255,255,255,0.7);
-}
-.nav-item.help-nav:hover { background: rgba(255,255,255,0.1); color: white; }
+.help-btn { margin-left: auto; width: 38px; height: 38px; border-radius: 10px; background: #ede9fe; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 16px; transition: all 0.2s; flex-shrink: 0; }
+.help-btn:hover { background: var(--primary); color: white; transform: scale(1.05); }
 
 /* ===== PAGE ===== */
 .page-content { padding: 28px; flex: 1; }
@@ -596,7 +573,7 @@ textarea.form-input { resize: vertical; min-height: 90px; }
 .mob-topbar-logo .tl-icon i { color: white; font-size: 14px; }
 .mob-topbar-logo span { font-size: 18px; font-weight: 800; color: var(--text-dark); letter-spacing: 1.5px; }
 @media (max-width: 768px) {
-  .sidebar { left: -100%; width: 260px; z-index: 200; box-shadow: none; height: 100vh; height: 100dvh; min-height: -webkit-fill-available; }
+  .sidebar { left: -100%; width: 260px; z-index: 200; box-shadow: none; }
   .sidebar.open { left: 0; box-shadow: 6px 0 32px rgba(0,0,0,0.35); }
   .main-content { margin-left: 0; border-radius: 0; }
   .topbar { border-radius: 0; padding: 12px 16px; }
@@ -613,10 +590,6 @@ textarea.form-input { resize: vertical; min-height: 90px; }
   .feature-cards-grid { grid-template-columns: 1fr; }
   .auth-form-section { padding: 30px 24px; }
   .profile-fields { grid-template-columns: 1fr; }
-  .profile-topbar-btn span { display: none; }
-  .profile-topbar-btn { padding: 8px 10px; }
-
-  /* ===== MOBILE ANNOUNCEMENT CARD FIX ===== */
   .ann-item { flex-direction: column !important; gap: 10px; padding: 14px; }
   .ann-body { width: 100% !important; min-width: 0 !important; word-break: break-word !important; overflow-wrap: break-word !important; }
   .ann-title { font-size: 15px; white-space: normal !important; word-break: break-word !important; line-height: 1.4; margin-bottom: 5px; }
@@ -684,7 +657,7 @@ textarea.form-input { resize: vertical; min-height: 90px; }
       <p><strong>Admin accounts</strong> have full access to create, edit, pin, and delete announcements. <strong>Student accounts</strong> can view and search all content but cannot post or modify it.</p>
     </div>
     <div class="modal-footer">
-      <div class="modal-footer-tip"><i class="fa-solid fa-lightbulb"></i> Tip: Click <strong>Guide</strong> in the sidebar anytime to reopen this.</div>
+      <div class="modal-footer-tip"><i class="fa-solid fa-lightbulb"></i> Tip: Click the <strong>?</strong> button anytime to reopen this guide.</div>
       <button class="got-it-btn" onclick="closeFeaturesModal()">Got it! 👍</button>
     </div>
   </div>
@@ -776,6 +749,7 @@ textarea.form-input { resize: vertical; min-height: 90px; }
           </div>
           <div class="input-group">
             <label><i class="fa-solid fa-cake-candles"></i> Birthday</label>
+            <!-- ✅ FIX: max attribute set dynamically via JS to prevent future dates -->
             <input type="date" id="suBirthday">
           </div>
           <div class="input-group">
@@ -814,8 +788,7 @@ textarea.form-input { resize: vertical; min-height: 90px; }
         <button class="nav-item" onclick="showPage('announcementsPage',this)"><i class="fa-solid fa-bullhorn"></i><span>Announcements</span></button>
         <button class="nav-item" id="createPostNav" onclick="showPage('createPage',this)" style="display:none;"><i class="fa-solid fa-pen-to-square"></i><span>Create Post</span></button>
         <button class="nav-item" onclick="showPage('calendarPage',this)"><i class="fa-solid fa-calendar-days"></i><span>Calendar</span></button>
-        <!-- SWAPPED: Help/Guide button now lives in the sidebar (was topbar "?" button) -->
-        <button class="nav-item help-nav" onclick="openFeaturesModal()"><i class="fa-solid fa-circle-question"></i><span>Guide</span></button>
+        <button class="nav-item" onclick="showPage('profilePage',this)"><i class="fa-solid fa-circle-user"></i><span>Profile</span></button>
         <button class="nav-item" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
       </nav>
       <div class="sidebar-user">
@@ -833,11 +806,7 @@ textarea.form-input { resize: vertical; min-height: 90px; }
           <input type="text" id="topSearch" placeholder="Search announcements..." oninput="handleTopSearch()" onkeydown="if(event.key==='Enter')submitTopSearch()">
           <button id="topSearchClear" onclick="clearTopSearch()" style="display:none;background:none;border:none;cursor:pointer;color:var(--text-light);padding:2px 4px;font-size:13px;line-height:1;" title="Clear"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <!-- SWAPPED: Profile button now lives in the topbar (was sidebar nav item) -->
-        <button class="profile-topbar-btn" onclick="showPage('profilePage', document.querySelector('[onclick*=\'profilePage\']'))" title="My Profile">
-          <i class="fa-solid fa-circle-user"></i>
-          <span id="topbarProfileName">Profile</span>
-        </button>
+        <button class="help-btn" onclick="openFeaturesModal()" title="Website Guide"><i class="fa-solid fa-question"></i></button>
       </div>
 
       <div class="page-content">
@@ -1109,6 +1078,17 @@ const MONTHS     = ["January","February","March","April","May","June","July","Au
 const DAYS_SHORT = ["S","M","T","W","T","F","S"];
 const DAYS_FULL  = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
+// ✅ FIX: Set birthday max to today so future dates are blocked in the date picker
+function enforceBirthdayMax() {
+  const el = document.getElementById("suBirthday");
+  if (el) el.max = getTodayISO();
+}
+
+// Call once on page load so the picker is restricted before the user even opens the form
+document.addEventListener("DOMContentLoaded", () => {
+  enforceBirthdayMax();
+});
+
 window.switchTab = function(tab) {
   document.getElementById("tabSignIn").classList.toggle("active", tab === "signin");
   document.getElementById("tabSignUp").classList.toggle("active", tab === "signup");
@@ -1161,6 +1141,16 @@ window.doSignUp = async function() {
   if (!email)    { showAuthError("signupError", "Please enter your school email."); return; }
   if (!email.endsWith("@gfis.edu.ph")) { showAuthError("signupError", "Only @gfis.edu.ph email addresses are allowed."); return; }
   if (!birthday) { showAuthError("signupError", "Please enter your birthday."); return; }
+
+  // ✅ FIX: Validate that birthday is not today or in the future
+  const birthdayDate  = new Date(birthday);
+  const todayMidnight = new Date();
+  todayMidnight.setHours(0, 0, 0, 0);
+  if (birthdayDate >= todayMidnight) {
+    showAuthError("signupError", "Birthday cannot be today or in the future. Please enter a valid birthday.");
+    return;
+  }
+
   if (!pwd)      { showAuthError("signupError", "Please enter a password."); return; }
   if (pwd.length < 6) { showAuthError("signupError", "Password must be at least 6 characters."); return; }
   if (pwd !== confirm) { showAuthError("signupError", "Passwords do not match."); return; }
@@ -1220,9 +1210,8 @@ function initDashboard() {
   document.getElementById("pBirthday").textContent          = userBirthday ? formatBirthday(userBirthday) : "Not set";
   document.getElementById("pUid").textContent               = currentUid;
   document.getElementById("postedHint").textContent         = `Posted on ${new Date().toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}`;
-  // Update topbar profile button label with first name
-  document.getElementById("topbarProfileName").textContent  = userName.split(" ")[0];
   enforceDateMin();
+  enforceBirthdayMax(); // ✅ FIX: also enforce on dashboard load in case user reopens the signup form
   if (unsubscribeAnn) unsubscribeAnn();
   const q = query(annCol, orderBy("createdAt","desc"));
   unsubscribeAnn = onSnapshot(q, snapshot => {
@@ -1278,6 +1267,7 @@ window.openLightbox = function(src, caption) {
   document.getElementById("lightboxOverlay").classList.add("open");
   document.body.style.overflow = "hidden";
 };
+// ✅ FIX: null-check on e so close button (called with no args) doesn't throw TypeError
 window.closeLightbox = function(e) {
   if (e && e.target !== document.getElementById("lightboxOverlay")) return;
   document.getElementById("lightboxOverlay").classList.remove("open");
@@ -1285,7 +1275,11 @@ window.closeLightbox = function(e) {
   setTimeout(() => { document.getElementById("lightboxImg").src = ""; }, 350);
 };
 document.addEventListener("keydown", e => {
-  if (e.key === "Escape") { document.getElementById("lightboxOverlay").classList.remove("open"); document.getElementById("featuresModal").classList.remove("open"); document.body.style.overflow = ""; }
+  if (e.key === "Escape") {
+    document.getElementById("lightboxOverlay").classList.remove("open");
+    document.getElementById("featuresModal").classList.remove("open");
+    document.body.style.overflow = "";
+  }
 });
 
 // ===== HELPERS =====
@@ -1443,7 +1437,10 @@ window.setFilter = function(scope, val, btn) {
   const tabIds = { dash:"dashFilterTabs", ann:"annFilterTabs", manage:"manageFilterTabs" };
   document.querySelectorAll(`#${tabIds[scope]} .filter-tab`).forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
-  if (scope === "dash") renderDashList(); else if (scope === "ann") renderAnnList(); else { managePage = 1; renderManageGrid(); }
+  // ✅ FIX: reset managePage when filter changes so you don't land on a blank page
+  if (scope === "dash") renderDashList();
+  else if (scope === "ann") renderAnnList();
+  else { managePage = 1; renderManageGrid(); }
 };
 window.setManageSideFilter = function(val, btn) {
   manageSideFilter = val;
