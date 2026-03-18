@@ -1084,9 +1084,20 @@ function enforceBirthdayMax() {
   if (el) el.max = getTodayISO();
 }
 
-// Call once on page load so the picker is restricted before the user even opens the form
+// ✅ NEW: Limits the announcement date picker to 2 years into the future
+function enforceDateMax() {
+  const el = document.getElementById("dateInput");
+  if (el) {
+    const max = new Date();
+    max.setFullYear(max.getFullYear() + 2);
+    el.max = `${max.getFullYear()}-${String(max.getMonth()+1).padStart(2,"0")}-${String(max.getDate()).padStart(2,"0")}`;
+  }
+}
+
+// Call once on page load so the pickers are restricted before the user even opens the form
 document.addEventListener("DOMContentLoaded", () => {
   enforceBirthdayMax();
+  enforceDateMax();
 });
 
 window.switchTab = function(tab) {
@@ -1211,6 +1222,7 @@ function initDashboard() {
   document.getElementById("pUid").textContent               = currentUid;
   document.getElementById("postedHint").textContent         = `Posted on ${new Date().toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}`;
   enforceDateMin();
+  enforceDateMax(); // ✅ NEW: cap announcement dates to 2 years from today
   enforceBirthdayMax(); // ✅ FIX: also enforce on dashboard load in case user reopens the signup form
   if (unsubscribeAnn) unsubscribeAnn();
   const q = query(annCol, orderBy("createdAt","desc"));
@@ -1361,8 +1373,17 @@ window.addAnnouncement = async function() {
   const pinned   = document.getElementById("pinInput").checked;
   if (!title)   { showToast("Please enter a title"); return; }
   if (!dateVal) { showToast("Please select a date"); return; }
-  const selectedDate = new Date(dateVal); const todayMidnight = new Date(); todayMidnight.setHours(0,0,0,0);
+  const selectedDate = new Date(dateVal);
+  const todayMidnight = new Date();
+  todayMidnight.setHours(0,0,0,0);
+
+  // ✅ NEW: Max allowed date is 2 years from today
+  const maxDate = new Date();
+  maxDate.setFullYear(maxDate.getFullYear() + 2);
+  maxDate.setHours(0, 0, 0, 0);
+
   if (selectedDate < todayMidnight) { showToast("❌ Cannot set announcements in the past!"); enforceDateMin(); return; }
+  if (selectedDate > maxDate) { showToast("❌ Date cannot be more than 2 years into the future!"); enforceDateMax(); return; }
   const formattedDate = new Date(dateVal).toLocaleDateString("en-GB");
   const postBtn = document.getElementById("postBtn"); postBtn.disabled = true;
   try {
@@ -1384,7 +1405,7 @@ window.addAnnouncement = async function() {
       showToast(pinned ? "📌 Announcement pinned & posted!" : "✅ Announcement posted!");
     }
     ["titleInput","descInput","dateInput","timeInput","venueInput","picInput"].forEach(id => { document.getElementById(id).value = ""; });
-    document.getElementById("pinInput").checked = false; syncPinToggleRow(); clearImage(); enforceDateMin();
+    document.getElementById("pinInput").checked = false; syncPinToggleRow(); clearImage(); enforceDateMin(); enforceDateMax(); // ✅ NEW
   } catch(err) { console.error("Error saving:", err); showToast("❌ Error saving. Try again."); }
   finally { postBtn.disabled = false; }
 };
@@ -1414,7 +1435,7 @@ window.editAnnouncement = function(id) {
 window.cancelEdit = function() {
   editingId = null;
   ["titleInput","descInput","dateInput","timeInput","venueInput","picInput"].forEach(id => { document.getElementById(id).value = ""; });
-  document.getElementById("pinInput").checked = false; syncPinToggleRow(); clearImage(); enforceDateMin();
+  document.getElementById("pinInput").checked = false; syncPinToggleRow(); clearImage(); enforceDateMin(); enforceDateMax(); // ✅ NEW
   document.getElementById("postBtnText").textContent     = "Post Announcement";
   document.getElementById("cancelEditBtn").style.display = "none";
   document.getElementById("createPageTitle").textContent = "Create Announcement";
